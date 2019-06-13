@@ -1,0 +1,55 @@
+1.安装python 3.7 
+2.安装django 2.2
+3.创建项目 django-admin.py startproject  项目名
+4.修改数据库以及字符编码配置
+DATABASES = {
+    'default': {
+		'ENGINE': 'django.db.backends.mysql', 
+		'NAME': 'Djangoadmin', 
+		'USER':'root', 
+		'PASSWORD':'123456', 
+		'PORT':'3306', 
+    }
+}
+
+# 切换mysql必须 安装pymsql
+# pip install pymysql
+安装完毕，打开_init_.py,添加代码：
+import pymysql 
+pymysql.install_as_MySQLdb()
+进入python安装目录下django的目录里 django\db\backends\mysql 下的base.py  注释掉
+#if version < (1, 3, 13):
+#   raise ImproperlyConfigured('mysqlclient 1.3.13 or newer is required; you have %s.' % Database.__version__)
+这两行
+
+LANGUAGE_CODE = 'zh-hans'
+
+TIME_ZONE = 'Asia/Shanghai'
+
+
+
+5.创建新的app  django-admin startapp demoapp名
+##################################################################################################
+6.集成xadmin后台 下载xadmin源码
+安装pip install django-crispy-forms
+安装pip install django-formtools
+安装pip install django-import-export
+
+先执行python manage.py makemigrations 
+然后执行python manage.py migrate 生成数据库
+
+其他的缺少什么pip install什么
+
+运行服务  python manage.py runserver 0.0.0.0:8000
+
+创建一个管理用户：
+python manage.py createsuperuser
+###############################################################################################
+7.假如要开发api接口 
+安装pip install django-rest-framework   接口序列化框架
+安装pip install django-rest-swagger     接口文档自动生成框架
+可能会出现如下问题running build_ext error: [WinError 2] 系统找不到指定的文件  需要修改D:\ProgramData\Anaconda3\Lib\distutils\distutils.cfg 这个文件
+compiler=mingw32 改 compiler=msvc
+
+
+
