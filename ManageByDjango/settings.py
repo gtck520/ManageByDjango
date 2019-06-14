@@ -88,7 +88,7 @@ DATABASES = {
 		'ENGINE': 'django.db.backends.mysql', 
 		'NAME': 'Djangoadmin', 
 		'USER':'root', 
-		'PASSWORD':'123456', 
+		'PASSWORD':'root', 
 		'PORT':'3306', 
     }
 }
@@ -155,3 +155,18 @@ SWAGGER_SETTINGS = {
     'OPERATIONS_SORTER': 'alpha',
     'VALIDATOR_URL': None,
 }
+#resis 缓存配置项
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379',
+        "OPTIONS": {            
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": "123456",
+        },
+    },
+}
+#以下三项可视情况设置，或忽略
+REDIS_TIMEOUT=7*24*60*60
+CUBES_REDIS_TIMEOUT=60*60
+NEVER_REDIS_TIMEOUT=365*24*60*60

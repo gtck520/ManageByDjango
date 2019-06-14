@@ -1,3 +1,14 @@
 cd G:\konger\python\ManageByDjango
 python manage.py runserver 0.0.0.0:8000 启动服务
 django-admin startapp demoapp名  创建新应用
+
+//公司
+cd F:\mypro\python\ManageByDjango
+
+
+
+解决socket.timeout: The read operation timed out 方法，设置超时时间
+pip --default-timeout=100 install -U Pillow
+
+解决'str' object has no attribute 'decode' 方法：
+去掉decode方法。python3无此属性
