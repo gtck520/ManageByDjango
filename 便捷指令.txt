@@ -5,6 +5,15 @@ django-admin startapp demoapp名  创建新应用
 //公司
 cd F:\mypro\python\ManageByDjango
 
+常用的redis服务命令。
+卸载服务：redis-server --service-uninstall
+
+开启服务：redis-server --service-start
+
+停止服务：redis-server --service-stop
+
+重命名服务：redis-server --service-name name
+
 
 
 解决socket.timeout: The read operation timed out 方法，设置超时时间

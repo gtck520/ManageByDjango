@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import sys
-
+import datetime
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0,os.path.join(BASE_DIR,'extra_apps'))
@@ -88,7 +88,7 @@ DATABASES = {
 		'ENGINE': 'django.db.backends.mysql', 
 		'NAME': 'Djangoadmin', 
 		'USER':'root', 
-		'PASSWORD':'root', 
+		'PASSWORD':'123456', 
 		'PORT':'3306', 
     }
 }
@@ -162,7 +162,7 @@ CACHES = {
         'LOCATION': 'redis://127.0.0.1:6379',
         "OPTIONS": {            
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "PASSWORD": "123456",
+            "PASSWORD": "12345",
         },
     },
 }
@@ -170,3 +170,19 @@ CACHES = {
 REDIS_TIMEOUT=7*24*60*60
 CUBES_REDIS_TIMEOUT=60*60
 NEVER_REDIS_TIMEOUT=365*24*60*60
+
+#REST_FRAMEWORK 具体参数
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',#使用jwt验证
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+JWT_AUTH = {  # 导包： import datetime
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # jwt有效时间
+}

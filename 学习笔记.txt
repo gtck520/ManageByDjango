@@ -39,7 +39,7 @@ TIME_ZONE = 'Asia/Shanghai'
 
 先执行python manage.py makemigrations 
 然后执行python manage.py migrate 生成数据库
-如果出现sql语句问题，多半是mysql版本太旧，升级到mysql5.7之后没有问题
+如果出现sql语句问题，多半是mysql版本太旧，升级到mysql5.7之后没有问题 升级软件后需修复数据库 mysql_upgrade -u root -p密码
 
 其他的缺少什么pip install什么
 
@@ -56,6 +56,7 @@ compiler=mingw32 改 compiler=msvc
 ###############################################################################################
 8.配置django使用redis缓存
 官网下载redis 安装redis https://www.runoob.com/redis/redis-install.html
+修改redis.windows.conf文件 设置redis密码 ，默认无密码：requirepass foobared 改 requirepass 123456
 pip install django-redis
 
 settings.py中加入以下内容,your_host_ip换成你的服务器地址,yoursecret换成你的服务器密码
@@ -158,3 +159,7 @@ li2 = conn.zrevrange(key1, 0, 10)
 # li2就是：['444', 'world', 'ooo', 'HELLO', '333']
 
 # 我统计热搜关键词排序用到了
+###############################################################################################
+9.配置使用jwt模式做token验证
+pip install djangorestframework-jwt
+参考 https://www.cnblogs.com/chichung/p/9967325.html 做法
