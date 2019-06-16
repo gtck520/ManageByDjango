@@ -3,7 +3,12 @@ from django.shortcuts import render
 # Create your views here.
 # 视图
 from  django.contrib.auth.models import User,Group
+from rest_framework.decorators import api_view
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework import viewsets
+from rest_framework import generics
 from  myapi.serializers import UserSerializer,GroupSerializer
 # Create your views here.
 
@@ -30,3 +35,17 @@ class Register(viewsets.ModelViewSet):
     其他说明：
     """
     serializer_class = UserSerializer
+    
+class UserBserDetail(generics.ListCreateAPIView):
+	serializer_class = UserSerializer
+	def get(self, request, *args, **kwargs):
+		user = User.objects.get(pk = kwargs["pk"])
+		serializer = UserSerializer(user)
+		return Response(serializer.data, status = status.HTTP_201_CREATED)
+	def post(self, request, *args, **kwargs):
+		serializer = UserSerializer(data = request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status = status.HTTP_201_CREATED)
+		else:
+			return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
