@@ -8,7 +8,7 @@ router = routers.DefaultRouter()
 #模型显示的例子
 # router.register(r'users',views.UserViewSet,base_name='user')
 # router.register(r'groups',views.GroupViewSet,base_name='group')
-router.register(r'register',views.UserBserDetail,base_name='register')
+router.register(r'users',views.Users,base_name='user')
 
 # 重要的是如下三行
 from rest_framework.schemas import get_schema_view
