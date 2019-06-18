@@ -21,5 +21,5 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     #xadmin后台
     path('admin/', xadmin.site.urls),
-    path('api/', include('myapi.urls')),
+    path('v1/users/', include('users.urls')),
 ]

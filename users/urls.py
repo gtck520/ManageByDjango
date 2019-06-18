@@ -1,7 +1,7 @@
 from django.urls import path,include #Django2中的语法
 from django.contrib import admin
 from  rest_framework import routers
-from  myapi import views
+from  users import views
 
 # 路由
 router = routers.DefaultRouter()

@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'reversion',
     'newadmin',#此为后台应用
     #配置api接口开发
-    'myapi',
+    'users',#用户api模块
     'rest_framework',
     'rest_framework_swagger',
 ]
