@@ -21,3 +21,12 @@ pip --default-timeout=100 install -U Pillow
 
 解决'str' object has no attribute 'decode' 方法：
 去掉decode方法。python3无此属性
+
+虚拟环境安装
+
+pip install virtualenv
+pip install virtualenvwrapper-win  windows版本加-win
+mkvirtualenv env2 新建虚拟环境
+workon 查看所有虚拟环境
+workon python3  进入虚拟环境
+deactivate 退出

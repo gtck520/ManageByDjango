@@ -8,7 +8,21 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model =UserProfile
         fields = "__all__"
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =User
+        fields = "__all__"
+class UserPostSerializer(serializers.HyperlinkedModelSerializer):
+
+    #自定义一个tellphone序列化字段
+    telephone = serializers.CharField(required=True, write_only=True, max_length=11, min_length=11,
+                                 error_messages={
+                                        "blank": "请输入电话号码",
+                                        "required": "请输入电话号码",
+                                        "max_length": "电话号码格式错误",
+                                        "min_length": "电话号码格式错误"
+                                 },
+                                help_text="电话号码",validators=[UniqueValidator(queryset=User.objects.all(), message="电话号码已经存在")])
     #User中没有code字段，这里需要自定义一个code序列化字段
     code = serializers.CharField(required=True, write_only=True, max_length=4, min_length=4,
                                  error_messages={
@@ -41,10 +55,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
         else:
             raise serializers.ValidationError("验证码错误")
-    profile = UserProfileSerializer(read_only=True)
+    # profile = serializers.SlugRelatedField(
+    #     read_only=True,
+    #     slug_field='telephone'
+    #  )
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ("username","telephone","password","code")
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model =Group

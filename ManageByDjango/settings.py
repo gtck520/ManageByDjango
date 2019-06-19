@@ -181,6 +181,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'PAGE_SIZE': 10,
 }
 
 JWT_AUTH = {  # 导包： import datetime
