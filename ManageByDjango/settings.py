@@ -15,8 +15,8 @@ import sys
 import datetime
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0,os.path.join(BASE_DIR,'extra_apps'))
-sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -43,11 +43,18 @@ INSTALLED_APPS = [
     'crispy_forms',
     'reversion',
     # 配置api接口开发
-    'users',  # 用户api模块
     'rest_framework',
     'rest_framework_swagger',
-]
+    'users',
+    'news',
+    'interactive',
+    'common',
+    'operation',
+    'bible',
 
+]
+# 用户模块采用自定义用户表
+AUTH_USER_MODEL = "users.UserProfile"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -126,10 +133,19 @@ USE_L10N = True
 USE_TZ = False
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
+# Static files (CSS, JavaScript, Images) 静态文件目录配置
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
+
+# 媒体文件上传目录配置
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # swagger 配置项
 SWAGGER_SETTINGS = {
