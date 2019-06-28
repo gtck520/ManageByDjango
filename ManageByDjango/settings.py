@@ -42,9 +42,9 @@ INSTALLED_APPS = [
     'xadmin',
     'crispy_forms',
     'reversion',
-    'newadmin',#此为后台应用
-    #配置api接口开发
-    'users',#用户api模块
+    'newadmin',  # 此为后台应用
+    # 配置api接口开发
+    'users',  # 用户api模块
     'rest_framework',
     'rest_framework_swagger',
 ]
@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'ManageByDjango.wsgi.application'
 
 DATABASES = {
     'default': {
-		'ENGINE': 'django.db.backends.mysql', 
-		'NAME': 'Djangoadmin', 
-		'USER':'root', 
-		'PASSWORD':'123456', 
-		'PORT':'3306', 
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'djangoadmin',
+        'USER': 'root',
+        'PASSWORD': '123456',
+        'PORT': '3306',
     }
 }
 
@@ -124,7 +124,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 SWAGGER_SETTINGS = {
     # 基础样式
     'SECURITY_DEFINITIONS': {
-        "basic":{
+        "basic": {
             'type': 'basic'
         }
     },
@@ -155,7 +155,7 @@ SWAGGER_SETTINGS = {
     'OPERATIONS_SORTER': 'alpha',
     'VALIDATOR_URL': None,
 }
-#resis 缓存配置项
+# resis 缓存配置项
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -166,18 +166,18 @@ CACHES = {
         },
     },
 }
-#以下三项可视情况设置，或忽略
-REDIS_TIMEOUT=7*24*60*60
-CUBES_REDIS_TIMEOUT=60*60
-NEVER_REDIS_TIMEOUT=365*24*60*60
+# 以下三项可视情况设置，或忽略
+REDIS_TIMEOUT = 7*24*60*60
+CUBES_REDIS_TIMEOUT = 60*60
+NEVER_REDIS_TIMEOUT = 365*24*60*60
 
-#REST_FRAMEWORK 具体参数
+# REST_FRAMEWORK 具体参数
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',#使用jwt验证
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 使用jwt验证
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
