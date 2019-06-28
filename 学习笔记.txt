@@ -164,3 +164,4 @@ li2 = conn.zrevrange(key1, 0, 10)
 9.配置使用jwt模式做token验证
 pip install djangorestframework-jwt
 参考 https://www.cnblogs.com/chichung/p/9967325.html 做法
+
