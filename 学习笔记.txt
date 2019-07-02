@@ -165,5 +165,17 @@ li2 = conn.zrevrange(key1, 0, 10)
 pip install djangorestframework-jwt
 参考 https://www.cnblogs.com/chichung/p/9967325.html 做法
 
-要使用后台可以使用自动上传image模块 需要安装
+10.要使用后台可以使用自动上传image模块 需要安装
 pip --default-timeout=100 install -U Pillow
+
+11.pycharm 使用技巧之新建文件模板
+
+File->settings->Editor->File and Code Templates->Python Script
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : ${DATE} ${TIME}
+# @Author  : Aries
+# @Site    : ${SITE}
+# @File    : ${NAME}.py
+# @Software: ${PRODUCT_NAME}
