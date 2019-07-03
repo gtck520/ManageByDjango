@@ -14,12 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include  # Django2中的语法
+from django.urls import path, re_path, include  # Django2中的语法
 # from django.conf.urls import include, url # Django1.11中的语法
 import xadmin
+import DjangoUeditor
 urlpatterns = [
     # path('admin/', admin.site.urls),
     # xadmin后台
     path('admin/', xadmin.site.urls),
-    #path('v1/users/', include('users.urls')),
+    # path('v1/users/', include('users.urls')),
+    # 富文本编辑器
+    path('ueditor/', include('DjangoUeditor.urls'))
 ]

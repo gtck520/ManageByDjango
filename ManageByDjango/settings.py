@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # 配置api接口开发
     'rest_framework',
     'rest_framework_swagger',
+    'DjangoUeditor',
     'users',
     'news',
     'interactive',

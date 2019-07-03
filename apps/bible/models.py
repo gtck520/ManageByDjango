@@ -1,7 +1,7 @@
 # _*_ encoding:utf-8 _*_
 from django.db import models
 
-
+from DjangoUeditor.models import UEditorField
 # Create your models here.
 
 class Books(models.Model):
@@ -17,7 +17,7 @@ class Books(models.Model):
         verbose_name = u"圣经卷名"
         verbose_name_plural = verbose_name
 
-    def __unicode__(self):
+    def __unicode__(self):  # python2用这个方法显示默认查询名称
         return self.FullName
 
     def __str__(self):  # python3用这个方法显示默认查询名称

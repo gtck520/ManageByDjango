@@ -179,3 +179,8 @@ File->settings->Editor->File and Code Templates->Python Script
 # @Site    : ${SITE}
 # @File    : ${NAME}.py
 # @Software: ${PRODUCT_NAME}
+#####################################################################################################
+12.安装使用富文本编辑器
+pip install DjangoUeditor  
+如果是python3 则需要下载 https://github.com/twz915/DjangoUeditor3 兼容包安装
+参考 https://www.cnblogs.com/tiantianhappy/p/10286528.html
