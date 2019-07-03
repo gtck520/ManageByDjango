@@ -9,7 +9,7 @@ class BooksAdmin(object):
     list_display = ['SN', 'KindSN', 'ChapterNumber', 'NewOrOld', 'PinYin', 'ShortName', 'FullName']
     search_fields = ['PinYin', 'ShortName', 'FullName']
     list_filter = [ 'KindSN', 'ChapterNumber', 'NewOrOld', 'PinYin', 'ShortName', 'FullName']
-    model_icon = 'fa fa-university'
+    model_icon = 'fa fa-book'
     # list_per_page设置每页显示多少条记录，默认是100条
     list_per_page = 20
     # ordering设置默认排序字段，负号表示降序排序
@@ -21,7 +21,7 @@ class ContentsAdmin(object):
     search_fields = ['Lection','VolumeSN__FullName']
     list_filter = ['VolumeSN', 'ChapterSN', 'VerseSN', 'Lection']
     relfield_style = 'fk-ajax'
-    model_icon = 'fa fa-university'
+    model_icon = 'fa fa-book'
     # list_per_page设置每页显示多少条记录，默认是100条
     list_per_page = 20
     # ordering设置默认排序字段，负号表示降序排序

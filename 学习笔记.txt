@@ -184,3 +184,6 @@ File->settings->Editor->File and Code Templates->Python Script
 pip install DjangoUeditor  
 如果是python3 则需要下载 https://github.com/twz915/DjangoUeditor3 兼容包安装
 参考 https://www.cnblogs.com/tiantianhappy/p/10286528.html
+#############################################################################################
+13.图标字体库更新 http://fontawesome.dashgame.com/ 下载下来  
+解压后 将 css、 font 两个目录 拷贝至F:\mypro\python\ManageByDjango\extra_apps\xadmin\static\xadmin\vendor\font-awesome 下面完成更新

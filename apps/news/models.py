@@ -31,6 +31,7 @@ class Articles(models.Model):
     keyword = models.CharField(max_length=50, verbose_name=u"文章关键字", null=True, blank=True)
     introduction = models.CharField(max_length=200, verbose_name=u"简介", null=True, blank=True)
     image = models.ImageField(upload_to="articles/%Y/%m", verbose_name=u"封面图", max_length=100)
+    snap_nums = models.IntegerField(default=0, verbose_name=u"点赞数")
     click_nums = models.IntegerField(default=0, verbose_name=u"点击数")
     fav_nums = models.IntegerField(default=0, verbose_name=u'收藏人数')
     detail = UEditorField(verbose_name=u"文章详情",width=600, height=300, imagePath="articles/ueditor/",
