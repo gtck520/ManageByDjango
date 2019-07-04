@@ -138,9 +138,9 @@ USE_TZ = False   # 默认是Ture，时间是utc时间，由于我们要用本地
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 # 用户自定义验证
-AUTHENTICATION_BACKENDS = (
-    'users.views.CustomBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'users.views.CustomBackend',
+# )
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
