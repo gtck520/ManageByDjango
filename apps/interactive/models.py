@@ -3,8 +3,6 @@ from datetime import datetime
 
 from django.db import models
 
-from bible.models import Contents
-from news.models import Articles
 # Create your models here.
 
 
@@ -46,16 +44,19 @@ class Interactives(models.Model):
     score = models.IntegerField(default=0, verbose_name=u"得分")
     pre_content = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='pres', null=True, blank=True,
                                     verbose_name='上一个内容')
-    next_content = models.ManyToManyField('self',  related_name='nexts', verbose_name='下一个内容')
+    next_content = models.ManyToManyField('self', related_name='nexts', verbose_name='下一个内容', blank=True)
     content_type = models.IntegerField(choices=((0, "只读内容"), (1, "问题内容"), (2, "选项内容")), default=0, verbose_name=u"内容类型")
     sort = models.IntegerField( verbose_name=u"排序", default=0)
     intermessage = models.ForeignKey(InteractiveMessage, verbose_name=u"提示消息", on_delete=models.CASCADE)
     background = models.ImageField(upload_to="interactive/%Y/%m", default=u"interactive/default.png",
-                                   verbose_name=u"背景图", max_length=100)
-    bible_contents = models.ManyToManyField(Contents, verbose_name=u"引用经文")
-    new_contents = models.ManyToManyField(Articles, verbose_name=u"引用新闻")
+                                   null=True, blank=True, verbose_name=u"背景图", max_length=100)
+    bible_contents = models.CharField(max_length=100, null=True, blank=True, verbose_name=u"引用经文")
+    new_contents = models.CharField(max_length=100, null=True, blank=True, verbose_name=u"引用新闻")
     add_time = models.DateTimeField(default=datetime.now,  verbose_name=u"添加时间")
 
     class Meta:
         verbose_name = u"交互内容"
         verbose_name_plural = verbose_name
+
+    def __str__(self):  # python3用这个方法显示默认查询名称
+        return u'%s %s' % (self.interclass, self.content)

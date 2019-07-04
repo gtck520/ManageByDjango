@@ -131,11 +131,16 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = False   # 默认是Ture，时间是utc时间，由于我们要用本地时间，所用手动修改为false！！！！
 
 
 # Static files (CSS, JavaScript, Images) 静态文件目录配置
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+
+# 用户自定义验证
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
@@ -202,4 +207,10 @@ REST_FRAMEWORK = {
 
 JWT_AUTH = {  # 导包： import datetime
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # jwt有效时间
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
+
+# 手机号码正则表达式
+REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
+# 云片网设置
+APIKEY = ""

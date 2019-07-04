@@ -1,8 +1,8 @@
 # _*_ encoding:utf-8 _*_
 from django.db import models
 
-from DjangoUeditor.models import UEditorField
 # Create your models here.
+
 
 class Books(models.Model):
     SN = models.AutoField(max_length=11, verbose_name=u"序号",primary_key=True)
@@ -35,3 +35,6 @@ class Contents(models.Model):
     class Meta:
         verbose_name = u"章节内容"
         verbose_name_plural = verbose_name
+
+    def __str__(self):  # python3用这个方法显示默认查询名称
+        return self.Lection
