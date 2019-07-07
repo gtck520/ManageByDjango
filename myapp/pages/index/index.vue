@@ -1,47 +1,46 @@
 <template>
-	<view class="content">
-		
+	<view>
+		<basics v-if="PageCur=='basics'"></basics>
+		<components v-if="PageCur=='component'"></components>
+		<plugin v-if="PageCur=='plugin'"></plugin>
+		<view class="cu-bar tabbar bg-white shadow foot">
+			<view class="action" @click="NavChange" data-cur="basics">
+				<view class='cuIcon-cu-image'>
+					<image :src="'/static/tabbar/basics' + [PageCur=='basics'?'_cur':''] + '.png'"></image>
+				</view>
+				<view :class="PageCur=='basics'?'text-green':'text-gray'">元素</view>
+			</view>
+			<view class="action" @click="NavChange" data-cur="component">
+				<view class='cuIcon-cu-image'>
+					<image :src="'/static/tabbar/component' + [PageCur == 'component'?'_cur':''] + '.png'"></image>
+				</view>
+				<view :class="PageCur=='component'?'text-green':'text-gray'">组件</view>
+			</view>
+			<view class="action" @click="NavChange" data-cur="plugin">
+				<view class='cuIcon-cu-image'>
+					<image :src="'/static/tabbar/plugin' + [PageCur == 'plugin'?'_cur':''] + '.png'"></image>
+				</view>
+				<view :class="PageCur=='plugin'?'text-green':'text-gray'">扩展</view>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
 	export default {
 		data() {
-			return {
+		return {
+				PageCur: 'basics'
 			}
 		},
-		onLoad(){
-			this.loadExecution()
-		},
 		methods: {
-			loadExecution: function(){
-				/**
-				 * 获取本地存储中launchFlag的值
-				 * 若存在，说明不是首次启动，直接进入首页；
-				 * 若不存在，说明是首次启动，进入引导页；
-				 */
-				var launchFlag='';
-				uni.getStorage({
-					key: 'launchFlag',
-					success: function (sto) {
-						launchFlag=sto.data
-					}
-				});
-				// 判断launchFlag的值是否为true，如果是true进入首页
-				if(launchFlag == true){
-					uni.switchTab({
-						url: '/pages/tabbar/tabbar-1/tabbar-1'
-					});
-				}else{
-					// launchFlag的值不为true，进入引导页
-					uni.redirectTo({
-						url: './guide'
-					});
-				}
+			NavChange: function(e) {
+				this.PageCur = e.currentTarget.dataset.cur
 			}
 		}
 	}
 </script>
+
 <style>
-	
+
 </style>
