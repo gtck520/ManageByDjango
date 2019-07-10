@@ -188,3 +188,5 @@ pip install DjangoUeditor
 #############################################################################################
 13.图标字体库更新 http://fontawesome.dashgame.com/ 下载下来  
 解压后 将 css、 font 两个目录 拷贝至F:\mypro\python\ManageByDjango\extra_apps\xadmin\static\xadmin\vendor\font-awesome 下面完成更新
+#########################################################################################################
+14. 跨域插件安装 pip install django-cors-headers

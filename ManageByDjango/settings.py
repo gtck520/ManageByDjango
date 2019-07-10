@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # 配置api接口开发
     'rest_framework',
     'rest_framework_swagger',
+    'corsheaders',   # 跨域插件
     'DjangoUeditor',
     'users',
     'news',
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
 # 用户模块采用自定义用户表
 AUTH_USER_MODEL = "users.UserProfile"
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',   # 跨域中间件配置
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -194,9 +196,10 @@ NEVER_REDIS_TIMEOUT = 365*24*60*60
 
 # REST_FRAMEWORK 具体参数
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    # 是否开启全局接口身份认证
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # 使用jwt验证
         'rest_framework.authentication.SessionAuthentication',
