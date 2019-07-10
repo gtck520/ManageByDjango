@@ -1,0 +1,85 @@
+
+page,
+.content{
+	width: 100%;
+	height: 100%;
+	background-size: 100% auto ;
+	padding: 0;
+}
+.swiper{
+	width: 100%;
+	height: 100%;
+}
+.swiper-item {
+	display: block;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	position: relative;
+}
+.swiper-item-img {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+}
+.swiper-item-img image{
+	width: 100%;
+	height: 100%;
+}
+.swiper-item-text {
+	padding-top: 40rpx;
+	width: 430rpx;
+	height: 130rpx;
+	margin: 0 auto;
+}
+.swiper-item-text image{
+	width: 100%;
+	height: 100%;
+}
+.swiper-text{
+	width: 100%;
+	position: absolute;
+	bottom: 80rpx;
+}
+.swiper-text view{
+	width: 100%;
+	text-align: center;
+	color: #FFF;
+}
+.swiper-text-cn{
+	font-size: 40rpx;
+}
+.swiper-text-us{
+	font-size: 28rpx;
+}
+.jump-over{
+	position: absolute;
+	height: 60rpx;
+	line-height: 60rpx;
+	padding: 0 40rpx;
+	-webkit-border-radius: 30rpx;
+	        border-radius: 30rpx;
+	font-size: 32rpx;
+	right: 45rpx;
+	top: 125rpx;
+	color: #37393b;
+	background: #918984;
+	z-index: 999;
+}
+.experience-now{
+	position: absolute;
+	width: 200rpx;
+	height: 60rpx;
+	line-height: 60rpx;
+	padding:5rpx 40rpx;
+	-webkit-border-radius: 35rpx;
+	        border-radius: 35rpx;
+	font-size: 32rpx;
+	left: 50%;
+	margin-left: -140rpx;
+	bottom: 220rpx;
+	color: #37393b;
+	background: #918984;
+	z-index: 9999;
+}
+

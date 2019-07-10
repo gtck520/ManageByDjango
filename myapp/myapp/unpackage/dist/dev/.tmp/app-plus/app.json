@@ -1,0 +1,68 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/index/guide",
+    "pages/tabbar/tabbar-1/tabbar-1",
+    "pages/tabbar/tabbar-2/tabbar-2",
+    "pages/tabbar/tabbar-3/tabbar-3",
+    "pages/tabbar/tabbar-4/tabbar-4",
+    "pages/tabbar/tabbar-5/tabbar-5",
+    "pages/mycenter/personalcenter/personalcenter",
+    "pages/zaizai-login/index",
+    "pages/zaizai-register/index",
+    "pages/zaizai-checking/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {},
+  "tabBar": {
+    "borderStyle": "black",
+    "backgroundColor": "#333",
+    "color": "#8F8F94",
+    "selectedColor": "#f33e54",
+    "list": [
+      {
+        "pagePath": "pages/tabbar/tabbar-1/tabbar-1",
+        "iconPath": "static/img/tabbar/home.png",
+        "selectedIconPath": "static/img/tabbar/homeactive.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/tabbar/tabbar-2/tabbar-2",
+        "iconPath": "static/img/tabbar/guanzhu.png",
+        "selectedIconPath": "static/img/tabbar/guanzhuactive.png",
+        "text": "关注"
+      },
+      {
+        "pagePath": "pages/tabbar/tabbar-3/tabbar-3",
+        "iconPath": "static/img/tabbar/add.png",
+        "selectedIconPath": "static/img/tabbar/addactive.png",
+        "text": "定位"
+      },
+      {
+        "pagePath": "pages/tabbar/tabbar-4/tabbar-4",
+        "iconPath": "static/img/tabbar/news.png",
+        "selectedIconPath": "static/img/tabbar/newsactive.png",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/tabbar/tabbar-5/tabbar-5",
+        "iconPath": "static/img/tabbar/me.png",
+        "selectedIconPath": "static/img/tabbar/meactive.png",
+        "text": "我"
+      }
+    ]
+  },
+  "nvueCompiler": "weex",
+  "splashscreen": {
+    "alwaysShowBeforeRender": true,
+    "autoclose": false
+  },
+  "appname": "myapp",
+  "compilerVersion": "2.0.1"
+}

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "",
+  "titleNView": {
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "type": "transparent"
+  }
+}

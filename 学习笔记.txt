@@ -52,6 +52,12 @@ python manage.py createsuperuser
 安装pip install django-rest-framework   接口序列化框架
 安装pip install django-rest-swagger     接口文档自动生成框架
 pip install coreapi pygments markdown   （另外一种文档生成）
+
+还可能需要以下依赖
+pip install httplib2
+pip install six
+pip install Pillow
+
 可能会出现如下问题running build_ext error: [WinError 2] 系统找不到指定的文件  需要修改D:\ProgramData\Anaconda3\Lib\distutils\distutils.cfg 这个文件
 compiler=mingw32 改 compiler=msvc
 参考 https://www.520pf.cn/article/146.html
