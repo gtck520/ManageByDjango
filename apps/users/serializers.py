@@ -6,12 +6,22 @@ from django.contrib.auth import get_user_model
 from datetime import datetime
 from datetime import timedelta
 from rest_framework.validators import UniqueValidator
-
 from .models import VerifyCode
 
 from ManageByDjango.settings import REGEX_MOBILE
 
 User = get_user_model()
+
+
+# 验证码序列化类
+class CaptchaSerializer(serializers.Serializer):
+    imgurl = serializers.CharField(max_length=200)
+    hashkey = serializers.CharField(max_length=200)
+
+
+class CaptchaCheckSerializer(serializers.Serializer):
+    imagecode = serializers.CharField(max_length=4)
+    hashkey = serializers.CharField(max_length=200)
 
 
 class SmsSerializer(serializers.Serializer):
@@ -65,11 +75,11 @@ class UserRegSerializer(serializers.ModelSerializer):
         style={'input_type': 'password'},help_text="密码", label="密码", write_only=True,
     )
 
-    # def create(self, validated_data):
-    #     user = super(UserRegSerializer, self).create(validated_data=validated_data)
-    #     user.set_password(validated_data["password"])
-    #     user.save()
-    #     return user
+    def create(self, validated_data):
+        user = super(UserRegSerializer, self).create(validated_data=validated_data)
+        user.set_password(validated_data["password"])
+        user.save()
+        return user
 
     def validate_code(self, code):
         # try:

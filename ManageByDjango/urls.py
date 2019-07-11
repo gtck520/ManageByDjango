@@ -21,19 +21,25 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework.authtoken import views
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
+from captcha.views import captcha_refresh
 
 from ManageByDjango.settings import MEDIA_ROOT
-from users.views import SmsCodeViewset, UserViewset, UserInfoViewSet
+from users.views import SmsCodeViewset, UserViewset, UserInfoViewSet, CaptchaViewset, CaptchaCheckViewset
 from news.views import NewsViewSet
 from interactive.views import InteractivesViewSet
+from common.views import captcha
 
 router = DefaultRouter()
 
 router.register(r'codes', SmsCodeViewset, base_name="codes")   # 验证码模块
+router.register(r'captchas', CaptchaViewset, base_name="captcha")   # 图片验证码
+router.register(r'captchas/check', CaptchaCheckViewset, base_name="captcha")   # 图片验证码验证
+
 router.register(r'users', UserViewset, base_name="users")   # 用户模块
 router.register(r'userinfo', UserInfoViewSet, base_name="users")   # 用户验证信息模块
 router.register(r'news', NewsViewSet, base_name="news")   # 新闻模块
 router.register(r'interactives', InteractivesViewSet, base_name="interactives")   # 交互模块
+
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
@@ -61,4 +67,7 @@ urlpatterns = [
 
     # jwt的认证接口
     re_path(r'^login/', obtain_jwt_token),
+
+    # 图片验证码 路由
+    path('captcha/', include('captcha.urls')),
 ]

@@ -1,7 +1,7 @@
 exports.install = function (Vue, options) {
 	// 参数： url:请求地址  param：请求参数  way：请求方式 res：回调函数
    Vue.prototype.urlRequest = function(param) {
-		let httpurl='http://127.0.0.1:8000/'
+		let httpurl=this.ApiHost;
 		// let deviceId = ''
  
 // 		uni.getStorage({

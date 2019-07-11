@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 from django.db.models import Q
-from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -17,10 +17,12 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler, jwt_decode_handler
 
-from .serializers import SmsSerializer, UserRegSerializer, UserDetailSerializer
+from .serializers import SmsSerializer, UserRegSerializer, UserDetailSerializer, CaptchaSerializer, \
+    CaptchaCheckSerializer
 from ManageByDjango.settings import APIKEY
 from common.yunpian import YunPian
 from .models import VerifyCode
+from common.views import captcha, jarge_captcha
 
 User = get_user_model()
 
@@ -39,6 +41,43 @@ class CustomBackend(ModelBackend):
         else:
             if user.check_password(password) and self.user_can_authenticate(user):
                 return user
+
+
+class CaptchaViewset(ListModelMixin, viewsets.GenericViewSet):
+    """
+    图片验证码生成
+    """
+    serializer_class = CaptchaSerializer
+
+    def list(self, request, *args, **kwargs):
+        captchajson = captcha()
+        if captchajson:
+            host = 'http://' + request.get_host()
+            sms_status = captchajson
+            sms_status['image_url'] = host + captchajson['image_url']
+            return Response(sms_status, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "获取图片码错误"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CaptchaCheckViewset(CreateModelMixin, viewsets.GenericViewSet):
+    """
+    图片验证码验证
+    """
+    serializer_class = CaptchaCheckSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        imagecode = serializer.validated_data["imagecode"]
+        hashkey = serializer.validated_data["hashkey"]
+        checkstatus = jarge_captcha(imagecode, hashkey)
+        if checkstatus:
+            sms_status = checkstatus
+            return Response({'status': sms_status}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "图片码错误"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SmsCodeViewset(CreateModelMixin, viewsets.GenericViewSet):
@@ -128,8 +167,10 @@ class UserViewset(CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveMode
         return serializer.save()
 
 
-# 根据token获得用户详细信息
 class UserInfoViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    根据token获得用户详细信息
+    """
     serializer_class = UserDetailSerializer
     queryset = User.objects.all()
 

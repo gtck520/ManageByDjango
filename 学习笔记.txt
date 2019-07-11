@@ -196,3 +196,5 @@ pip install DjangoUeditor
 解压后 将 css、 font 两个目录 拷贝至F:\mypro\python\ManageByDjango\extra_apps\xadmin\static\xadmin\vendor\font-awesome 下面完成更新
 #########################################################################################################
 14. 跨域插件安装 pip install django-cors-headers
+###############################################################################################
+15.pip install django-simple-captcha 图片验证码插件

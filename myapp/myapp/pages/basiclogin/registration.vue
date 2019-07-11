@@ -1,22 +1,36 @@
 <template>
 	<view class="content">
-		<view class="logo"><image src="../../static/login-registration/logo.png" mode=""></image></view>
+		<view class="logo"><image src="../../static/basiclogin/logo.png" mode=""></image></view>
 		<view class="uni-form-item uni-column">
-			<input type="tel" class="uni-input" name="" placeholder="请输入手机号" />
+			<input type="tel" class="uni-input" name="" placeholder="请输入手机号" v-model="mobile"/>
 		</view>
 		<view class="uni-form-item uni-column column-with-btn">
-			<input type="text" class="uni-input" name="" placeholder="请输入图片验证码" v-model="captchaImg" />
-			<image src="../../static/login-registration/captcha.jpg" mode="" class="img-captcha"></image>
+			<input type="text" class="uni-input" name="captchaCode" placeholder="请输入图片验证码" v-model="captchaCode" />
+			<image :src="captchaImg"  class="img-captcha" @tap="changeimg"  :data="hashkey"></image>
 		</view>
 		<view class="uni-form-item uni-column column-with-btn">
-			<input type="number" class="uni-input" name="" placeholder="请输入验证码" />
+			<input type="number" class="uni-input" name="" placeholder="请输入验证码" v-model="mobilecode"/>
 			<button :class="{active : !disableCodeBtn}" :disabled="disableCodeBtn" @tap="sendCode">{{codeBtn.text}}</button>
 		</view>
 		<view class="uni-form-item uni-column">
-			<input type="password" class="uni-input" name="" placeholder="请输入密码" />
+			<input type="password" class="uni-input" name="" placeholder="请输入密码" v-model="password"/>
 		</view>
-		<button type="primary">注册</button>
+		<button type="primary" @tap="register">注册</button>
 		<view class="links">已有账号？<view class="link-highlight" @tap="gotoLogin">点此登陆</view></view>
+		
+		<view class="cu-modal" :class="modalName=='Modal'?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white justify-end">
+					<view class="content">提示</view>
+					<view class="action" @tap="hideModal">
+						<text class="cuIcon-close text-red"></text>
+					</view>
+				</view>
+				<view class="padding-xl">
+					{{modalcontent}}
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -24,43 +38,140 @@
 	export default {
 		data() {
 			return {
+				mobile:'',
+				password:'',
+				mobilecode:'',
+				captchaCode: '',
 				captchaImg: '',
+				hashkey:'',
 				seconds: 10,
 				codeBtn: {
 					text: '获取验证码',
 					waitingCode: false,
 					count: this.seconds
-				}
+				},
+				modalName: null,
+				modalcontent:''
 			}
 		},
 		onLoad() {
 
 		},
+		onShow(){
+			this.changeimg();
+		},
 		methods: {
-			sendCode: function () {
-				this.codeBtn.waitingCode = true;
-				this.codeBtn.count = this.seconds;
-				this.codeBtn.text = this.codeBtn.count + 's';
-				
-				let countdown = setInterval( () => {
-					this.codeBtn.count--;
-					this.codeBtn.text = this.codeBtn.count + 's';
-					if( this.codeBtn.count < 0 ){
-						clearInterval(countdown);
-						this.codeBtn.text = '重新发送';
-						this.codeBtn.waitingCode = false;
+			sendCode: function () {				
+				//校验图片验证码
+				uni.request({
+				url: this.ApiHost+'v1/captchas/check/',
+				data: {
+					hashkey:this.hashkey,
+					imagecode:this.captchaCode
+				},
+				method: 'POST',
+				}) .then(data => {//data为一个数组，数组第一项为错误信息，第二项为返回数据
+					var [error, res]  = data;
+					if (res.statusCode == 200) {
+						if(res.data.status==true){
+							// 发送手机验证码
+							uni.request({
+							url: this.ApiHost+'v1/codes/',
+							data: {
+								mobile:this.mobile,
+							},
+							method: 'POST',
+							}).then(datab => {//data为一个数组，数组第一项为错误信息，第二项为返回数据
+								var [errorb, resb]  = datab;
+								if(resb.statusCode == 201){			
+									
+									this.codeBtn.waitingCode = true;
+									this.codeBtn.count = this.seconds;
+									this.codeBtn.text = this.codeBtn.count + 's';
+									
+									let countdown = setInterval( () => {
+										this.codeBtn.count--;
+										this.codeBtn.text = this.codeBtn.count + 's';
+										if( this.codeBtn.count < 0 ){
+											clearInterval(countdown);
+											this.codeBtn.text = '重新发送';
+											this.codeBtn.waitingCode = false;
+										}
+									},1000);
+								}else{				
+									console.log(resb);
+									this.showModal(resb.data.mobile);
+								}								
+							});							
+						}else{
+							this.showModal('图片验证码错误');
+						}
+					}else{
+						this.showModal('图片验证码错误');
 					}
-				},1000);
+				});	
 			},
+			changeimg:function(){
+				//获取图片验证码
+				this.urlRequest({
+				url: 'v1/captchas/',
+				data: {},
+				method: 'GET',
+				success: res => {
+					console.log(res);
+					if (res.statusCode == 200) {
+						this.captchaImg = res.data.image_url;
+						this.hashkey = res.data.hashkey;
+					}
+					else{
+					}
+				},
+				fail: () => {},
+				complete: () => {}
+				});
+			},			
 			gotoLogin: function () {
 				uni.navigateTo({
 					url: 'login'
 				})
-			}
+			},
+			register(e){
+				// 注册
+				uni.request({
+				url: this.ApiHost+'v1/users/',
+				data: {
+					username :this.mobile,
+					code :this.mobilecode,
+					mobile:this.mobile,
+					password:this.password
+				},
+				method: 'POST',
+				}) .then(data => {//data为一个数组，数组第一项为错误信息，第二项为返回数据
+					var [error, res]  = data;
+					var token = res.data.token;
+					// 保存用户token
+					uni.setStorageSync("token", token);
+					// 切换页面跳转，使用tab切换的api
+					uni.switchTab({
+						url: "../tabbar/tabbar-5/tabbar-5",
+						// success() {
+						// 	
+						// }
+					});
+				})
+			},
+			showModal(msg) {
+				this.modalName = 'Modal';
+				console.log(this.modalName);
+				this.modalcontent = msg;
+			},
+			hideModal(e) {
+				this.modalName = null
+			},
 		},
 		computed: {
 			disableCodeBtn: function (){
-				return this.codeBtn.waitingCode || this.captchaImg.length < 4;
+				return this.codeBtn.waitingCode || this.captchaCode.length < 4 || this.mobile.length< 11;
 			} 
 		}
 	}

@@ -70,7 +70,7 @@
 				},
 				fail: () => {},
 				complete: () => {}
-			});
+				});
 			},
 			showModal(msg) {
 				this.modalName = 'Modal';

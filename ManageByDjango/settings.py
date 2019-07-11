@@ -44,10 +44,10 @@ INSTALLED_APPS = [
     'reversion',
     # 配置api接口开发
     'rest_framework',
-    'rest_framework.authtoken',
     'rest_framework_swagger',
     'corsheaders',   # 跨域插件
-    'DjangoUeditor',
+    'captcha',   # 验证码插件
+    'DjangoUeditor',   # 富文本插件
     'users',
     'news',
     'interactive',
@@ -249,3 +249,22 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
     'JWT',
 )
+
+# django_simple_captcha 验证码配置其他配置项查看文档
+# 默认格式
+CAPTCHA_OUTPUT_FORMAT = '%(image)s %(text_field)s %(hidden_field)s '
+CAPTCHA_NOISE_FUNCTIONS = (
+    'captcha.helpers.noise_null',  # 没有样式
+    # 'captcha.helpers.noise_arcs', # 线
+    # 'captcha.helpers.noise_dots', # 点
+)
+# 图片中的文字为随机英文字母，如 mdsh
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+# 图片中的文字为数字表达式，如2+2=
+# CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+# 设置 captcha 图片大小
+# CAPTCHA_IMAGE_SIZE = (80, 45)
+# 字符个数
+CAPTCHA_LENGTH = 4
+# 超时(minutes)
+CAPTCHA_TIMEOUT = 1
