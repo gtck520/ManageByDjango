@@ -23,7 +23,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
 
 from ManageByDjango.settings import MEDIA_ROOT
-from users.views import SmsCodeViewset, UserViewset
+from users.views import SmsCodeViewset, UserViewset, UserInfoViewSet
 from news.views import NewsViewSet
 from interactive.views import InteractivesViewSet
 
@@ -31,6 +31,7 @@ router = DefaultRouter()
 
 router.register(r'codes', SmsCodeViewset, base_name="codes")   # 验证码模块
 router.register(r'users', UserViewset, base_name="users")   # 用户模块
+router.register(r'userinfo', UserInfoViewSet, base_name="users")   # 用户验证信息模块
 router.register(r'news', NewsViewSet, base_name="news")   # 新闻模块
 router.register(r'interactives', InteractivesViewSet, base_name="interactives")   # 交互模块
 

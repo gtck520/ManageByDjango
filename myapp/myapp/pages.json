@@ -2,6 +2,21 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/tabbar/tabbar-5/tabbar-5",
+			"style": {
+                "app-plus" : {
+                    "titleNView" : false //禁用原生导航栏
+                },
+                "navigationBarTextStyle" : "white",
+                "navigationBarTitleText" : "我的",
+                "navigationBarBackgroundColor" : "#4cd964"
+				}
+		},
+		{
+			"path": "pages/mycenter/personalcenter/personalcenter",
+			"style": {}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "启动页"
@@ -38,43 +53,49 @@
 			"style": {}
 		},
 		{
-			"path": "pages/tabbar/tabbar-5/tabbar-5",
-			"style": {}
-		},
-		{
-			"path": "pages/mycenter/personalcenter/personalcenter",
-			"style": {}
-		},
-		{
-			"path": "pages/zaizai-login/index",
+			"path": "pages/basiclogin/forget-password",
 			"style": {
+                "app-plus" : {
+                    "titleNView" : false //禁用原生导航栏
+                },
 				"navigationBarTitleText": ""
 			}
 		},
 		{
-			"path": "pages/zaizai-register/index",
+			"path": "pages/basiclogin/registration",
 			"style": {
+                "app-plus" : {
+                    "titleNView" : false //禁用原生导航栏
+                },
 				"navigationBarTitleText": ""
 			}
 		},
 		{
-			"path": "pages/zaizai-checking/index",
+			"path": "pages/basiclogin/login",
 			"style": {
+                "app-plus" : {
+                    "titleNView" : false //禁用原生导航栏
+                },
 				"navigationBarTitleText": ""
 			}
 		}
 	],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"mp-alipay": {
+			/* 支付宝小程序特有相关 */
+			"transparentTitle": "always",
+			"allowsBounceVertical": "NO"
+		},
+		"navigationBarBackgroundColor": "#0081ff",
+		"navigationBarTitleText": "ColorUi for UniApp",
+		"navigationStyle": "default",
+		"navigationBarTextStyle": "white"
 	},
 	"tabBar": {
-		"borderStyle": "black",
-		"backgroundColor": "#333",
-		"color": "#8F8F94",
-		"selectedColor": "#f33e54",
+		"borderStyle": "white",
+		"backgroundColor": "white",
+		"color": "black",
+		"selectedColor": "red",
 		"list": [{
 				"pagePath": "pages/tabbar/tabbar-1/tabbar-1",
 				"iconPath": "static/img/tabbar/home.png",

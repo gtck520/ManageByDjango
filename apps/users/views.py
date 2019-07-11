@@ -1,3 +1,4 @@
+# _*_ encoding:utf-8 _*_
 from django.shortcuts import render
 
 # Create your views here.
@@ -14,7 +15,7 @@ from rest_framework import permissions
 from rest_framework import authentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler
+from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler, jwt_decode_handler
 
 from .serializers import SmsSerializer, UserRegSerializer, UserDetailSerializer
 from ManageByDjango.settings import APIKEY
@@ -28,13 +29,16 @@ class CustomBackend(ModelBackend):
     """
     自定义用户验证
     """
-    def authenticate(self, username=None, password=None, **kwargs):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        if username is None:
+            username = kwargs.get(User.USERNAME_FIELD)
         try:
             user = User.objects.get(Q(username=username) | Q(mobile=username))
-            if user.check_password(password):
-                return user
         except Exception as e:
             return None
+        else:
+            if user.check_password(password) and self.user_can_authenticate(user):
+                return user
 
 
 class SmsCodeViewset(CreateModelMixin, viewsets.GenericViewSet):
@@ -122,5 +126,21 @@ class UserViewset(CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveMode
 
     def perform_create(self, serializer):
         return serializer.save()
+
+
+# 根据token获得用户详细信息
+class UserInfoViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = UserDetailSerializer
+    queryset = User.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        token = request.META.get("HTTP_JWT")
+        if token:
+            user_dict = jwt_decode_handler(token=token)
+            user = User.objects.get(id=user_dict['user_id'])
+            serializer = self.get_serializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 

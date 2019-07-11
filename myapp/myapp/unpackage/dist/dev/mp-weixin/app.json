@@ -1,30 +1,30 @@
 {
   "pages": [
+    "pages/tabbar/tabbar-5/tabbar-5",
+    "pages/mycenter/personalcenter/personalcenter",
     "pages/index/index",
     "pages/index/guide",
     "pages/tabbar/tabbar-1/tabbar-1",
     "pages/tabbar/tabbar-2/tabbar-2",
     "pages/tabbar/tabbar-3/tabbar-3",
     "pages/tabbar/tabbar-4/tabbar-4",
-    "pages/tabbar/tabbar-5/tabbar-5",
-    "pages/mycenter/personalcenter/personalcenter",
-    "pages/zaizai-login/index",
-    "pages/zaizai-register/index",
-    "pages/zaizai-checking/index"
+    "pages/basiclogin/forget-password",
+    "pages/basiclogin/registration",
+    "pages/basiclogin/login"
   ],
   "subPackages": [],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarBackgroundColor": "#0081ff",
+    "navigationBarTitleText": "ColorUi for UniApp",
+    "navigationStyle": "default",
+    "navigationBarTextStyle": "white"
   },
   "usingComponents": {},
   "tabBar": {
-    "borderStyle": "black",
-    "backgroundColor": "#333",
-    "color": "#8F8F94",
-    "selectedColor": "#f33e54",
+    "borderStyle": "white",
+    "backgroundColor": "white",
+    "color": "black",
+    "selectedColor": "red",
     "list": [
       {
         "pagePath": "pages/tabbar/tabbar-1/tabbar-1",
