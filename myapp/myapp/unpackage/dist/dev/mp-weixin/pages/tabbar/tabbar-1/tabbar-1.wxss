@@ -1,18 +1,10 @@
 
-.content {
-	text-align: center;
-	height: 400rpx;
-	margin-top: 200rpx;
-}
-.out-btn{
-	width: 660rpx;
-	height: 80rpx;
-	margin: 0 auto;
-	text-align: center;
-	line-height: 80rpx;
-	background: #918984;
-	color: #FFFFFF;
-	-webkit-border-radius: 40rpx;
-	        border-radius: 40rpx;
+.tower-swiper .tower-item {
+	-webkit-transform: scale(-webkit-calc(0.5 + var(--index) / 10));
+	    -ms-transform: scale(calc(0.5 + var(--index) / 10));
+	        transform: scale(calc(0.5 + var(--index) / 10));
+	margin-left: -webkit-calc(var(--left) * 100rpx - 150rpx);
+	margin-left: calc(var(--left) * 100rpx - 150rpx);
+	z-index: var(--index);
 }
 

@@ -2,6 +2,25 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+            "path" : "pages/bible/bible",
+            "style" : {}
+        },
+		{
+			"path": "pages/bible/content",
+			"style": {
+                "app-plus" : {
+                    "titleNView" : false //禁用原生导航栏
+                },
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/tabbar/tabbar-1/tabbar-1",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
 			"path": "pages/basiclogin/registration",
 			"style": {
                 "app-plus" : {
@@ -44,12 +63,6 @@
 			}
 		},
 		{
-			"path": "pages/tabbar/tabbar-1/tabbar-1",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		},
-		{
 			"path": "pages/tabbar/tabbar-2/tabbar-2",
 			"style": {}
 		},
@@ -79,7 +92,8 @@
 				"navigationBarTitleText": ""
 			}
 		}
-	],
+	    
+    ],
 	"globalStyle": {
 		"mp-alipay": {
 			/* 支付宝小程序特有相关 */

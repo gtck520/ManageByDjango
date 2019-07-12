@@ -27,7 +27,7 @@ from ManageByDjango.settings import MEDIA_ROOT
 from users.views import SmsCodeViewset, UserViewset, UserInfoViewSet, CaptchaViewset, CaptchaCheckViewset
 from news.views import NewsViewSet
 from interactive.views import InteractivesViewSet
-from common.views import captcha
+from bible.views import BooksViewSet, ChapterViewset, VerseViewset, ContentsViewSet
 
 router = DefaultRouter()
 
@@ -38,6 +38,11 @@ router.register(r'captchas/check', CaptchaCheckViewset, base_name="captcha")   #
 router.register(r'users', UserViewset, base_name="users")   # 用户模块
 router.register(r'userinfo', UserInfoViewSet, base_name="users")   # 用户验证信息模块
 router.register(r'news', NewsViewSet, base_name="news")   # 新闻模块
+router.register(r'books', BooksViewSet, base_name="books")   # 圣经卷名
+router.register(r'books/(?P<booksn>[0-9]+)/chapters', ChapterViewset, base_name="chapters")   # 圣经章选
+router.register(r'books/(?P<booksn>[0-9]+)/chapters/(?P<chaptersn>[0-9]+)', VerseViewset, base_name="verses")   # 圣经节选
+router.register(r'contents', ContentsViewSet, base_name="contents")   # 经文内容
+router.register(r'contents/(?P<booksn>[0-9]+)/(?P<chaptersn>[0-9]+)', ContentsViewSet, base_name="contents")   # 经文
 router.register(r'interactives', InteractivesViewSet, base_name="interactives")   # 交互模块
 
 

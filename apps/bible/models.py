@@ -25,9 +25,9 @@ class Books(models.Model):
 
 
 class Contents(models.Model):
-    VolumeSN = models.ForeignKey(Books, verbose_name=u"卷名", on_delete=models.CASCADE)
-    ChapterSN = models.IntegerField( verbose_name=u"章")
-    VerseSN = models.IntegerField( verbose_name=u"节")
+    VolumeSN = models.ForeignKey(Books, to_field="SN", related_name='books', verbose_name=u"卷名", on_delete=models.CASCADE)
+    ChapterSN = models.IntegerField(verbose_name=u"章")
+    VerseSN = models.IntegerField(verbose_name=u"节")
     Lection = models.CharField(max_length=255,  verbose_name=u"内容")
     SoundBegin = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=u"语音开始")
     SoundEnd = models.DecimalField(max_digits=10, decimal_places=3, verbose_name=u"语音结束")
