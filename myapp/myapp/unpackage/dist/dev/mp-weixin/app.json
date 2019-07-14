@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/question/index",
     "pages/bible/bible",
     "pages/bible/content",
     "pages/tabbar/tabbar-1/tabbar-1",

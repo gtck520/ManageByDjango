@@ -45,8 +45,7 @@ page {
 .logo-img {
 	width: 150rpx;
 	height: 150rpx;
-	-webkit-border-radius: 150rpx;
-	        border-radius: 150rpx;
+	border-radius: 150rpx;
 }
 .logo-title {
 	height: 150rpx;

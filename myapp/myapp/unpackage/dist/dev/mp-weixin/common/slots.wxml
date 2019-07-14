@@ -1,8 +1,8 @@
 <import src="/colorui/components/cu-custom.vue.wxml" />
 
-<template name="M3b621438-default-3b621438-0"></template>
+<template name="M755ab2d0-default-755ab2d0-0"></template>
 
-<template name="M3b621438-backText-3b621438-0">返回</template>
+<template name="M755ab2d0-backText-755ab2d0-0">返回</template>
 
-<template name="M3b621438-content-3b621438-0">{{fullname}}</template>
+<template name="M755ab2d0-content-755ab2d0-0">{{fullname}}</template>
 

@@ -35,8 +35,7 @@ page {
 .header .userinfo .face image {
         width: 100%;
         height: 100%;
-        -webkit-border-radius: 100%;
-                border-radius: 100%;
+        border-radius: 100%;
 }
 .header .userinfo .info {
       display: -webkit-box;
@@ -66,8 +65,7 @@ page {
         height: 40rpx;
         color: #fff;
         background-color: rgba(0, 0, 0, 0.1);
-        -webkit-border-radius: 20rpx;
-                border-radius: 20rpx;
+        border-radius: 20rpx;
         font-size: 24rpx;
 }
 .header .setting {
@@ -89,7 +87,6 @@ page {
   width: 92%;
   height: 11vw;
   padding: 0 4%;
-  margin-bottom: -webkit-calc(11vw + 40rpx);
   margin-bottom: calc(11vw + 40rpx);
   display: -webkit-box;
   display: -webkit-flex;
@@ -99,8 +96,7 @@ page {
   -webkit-align-items: flex-start;
       -ms-flex-align: start;
           align-items: flex-start;
-  -webkit-border-radius: 0 0 100% 100%;
-          border-radius: 0 0 100% 100%;
+  border-radius: 0 0 100% 100%;
   margin-top: -1rpx;
 }
 .orders .box {
@@ -108,8 +104,7 @@ page {
     padding: 0 1%;
     height: 22vw;
     background-color: #fefefe;
-    -webkit-border-radius: 24rpx;
-            border-radius: 24rpx;
+    border-radius: 24rpx;
     -webkit-box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.15);
             box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.15);
     margin-bottom: 40rpx;
@@ -160,8 +155,7 @@ page {
           background-color: #ec6d2c;
           top: -1vw;
           right: -1vw;
-          -webkit-border-radius: 100%;
-                  border-radius: 100%;
+          border-radius: 100%;
           font-size: 20rpx;
           color: #fff;
           display: -webkit-box;
