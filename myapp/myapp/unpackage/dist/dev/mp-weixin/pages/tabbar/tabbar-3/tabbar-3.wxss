@@ -44,8 +44,7 @@ view {
 	line-height: 80rpx;
 	background: #918984;
 	color: #FFFFFF;
-	-webkit-border-radius: 40rpx;
-	        border-radius: 40rpx;
+	border-radius: 40rpx;
 }
 .address-name{
 	font-size: 28rpx;

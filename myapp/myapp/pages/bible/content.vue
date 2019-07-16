@@ -1,7 +1,6 @@
 <template>
 	<view>
 		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
-			<block slot="backText">返回</block>
 			<block slot="content">{{fullname}}</block>
 			</cu-custom>
 		<view class="cu-bar bg-white solid-bottom margin-top">
@@ -9,12 +8,12 @@
 				<text class="cuIcon-title text-blue"></text>{{ChapterSN}}
 			</view>
 		</view>
-		<view class="padding bg-white">
-			<view class="text-left padding" v-for="(item,index) in contentlist" :key="index">
+		<scroll-view class="padding bg-white" scroll-y scroll-with-animation style="height:calc(100vh - 250upx)" >
+			<view class="text-left padding" v-for="(item,index) in contentlist" :key="index" :id="'main-'+item.VerseSN" >
 				<view class='cu-tag round'>{{item.VerseSN}}</view>
 				{{item.Lection}}
 			</view>
-		</view>
+		</scroll-view>
 	</view>
 	
 </template>
@@ -23,12 +22,18 @@
 	export default {
 		data() {
 			return {
+				booksn:1,
+				versesn:1,
+				chaptersn:1,
 				contentlist:{},
 				fullname:'',
 				ChapterSN:''
 			}
 		},
 		onLoad(o) {
+			this.booksn = o.booksn;
+			this.chaptersn = o.chaptersn;
+			this.versesn = o.versesn;
 			this.getcontents(o.booksn,o.chaptersn);
 		},
 		methods: {
@@ -43,7 +48,7 @@
 					this.contentlist = res.data;
 					this.ChapterSN=res.data[0]['ChapterSN']
 					this.fullname=res.data[0]['VolumeSN'].FullName;
-					console.log(this.contentlist);
+					//console.log(this.contentlist);
 				});
 			}
 		}

@@ -57,8 +57,7 @@ page,
 	height: 60rpx;
 	line-height: 60rpx;
 	padding: 0 40rpx;
-	-webkit-border-radius: 30rpx;
-	        border-radius: 30rpx;
+	border-radius: 30rpx;
 	font-size: 32rpx;
 	right: 45rpx;
 	top: 125rpx;
@@ -72,8 +71,7 @@ page,
 	height: 60rpx;
 	line-height: 60rpx;
 	padding:5rpx 40rpx;
-	-webkit-border-radius: 35rpx;
-	        border-radius: 35rpx;
+	border-radius: 35rpx;
 	font-size: 32rpx;
 	left: 50%;
 	margin-left: -140rpx;

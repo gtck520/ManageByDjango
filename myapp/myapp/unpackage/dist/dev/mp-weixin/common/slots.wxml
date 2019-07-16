@@ -2,7 +2,5 @@
 
 <template name="M3b621438-default-3b621438-0"></template>
 
-<template name="M3b621438-backText-3b621438-0">返回</template>
-
 <template name="M3b621438-content-3b621438-0">{{fullname}}</template>
 

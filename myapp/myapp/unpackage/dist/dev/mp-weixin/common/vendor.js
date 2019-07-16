@@ -445,11 +445,45 @@ function initMocks(vm, mocks) {
   });
 }
 
-function initHooks(mpOptions, hooks) {
+function hasHook(hook, vueOptions) {
+  if (!vueOptions) {
+    return true;
+  }
+
+  if (_vue.default.options && Array.isArray(_vue.default.options[hook])) {
+    return true;
+  }
+
+  vueOptions = vueOptions.default || vueOptions;
+
+  if (isFn(vueOptions)) {
+    if (isFn(vueOptions.extendOptions[hook])) {
+      return true;
+    }
+    if (vueOptions.super &&
+    vueOptions.super.options &&
+    Array.isArray(vueOptions.super.options[hook])) {
+      return true;
+    }
+    return false;
+  }
+
+  if (isFn(vueOptions[hook])) {
+    return true;
+  }
+  var mixins = vueOptions.mixins;
+  if (Array.isArray(mixins)) {
+    return !!mixins.find(function (mixin) {return hasHook(hook, mixin);});
+  }
+}
+
+function initHooks(mpOptions, hooks, vueOptions) {
   hooks.forEach(function (hook) {
-    mpOptions[hook] = function (args) {
-      return this.$vm && this.$vm.__call_hook(hook, args);
-    };
+    if (hasHook(hook, vueOptions)) {
+      mpOptions[hook] = function (args) {
+        return this.$vm && this.$vm.__call_hook(hook, args);
+      };
+    }
   });
 }
 
@@ -549,8 +583,14 @@ function initBehaviors(vueOptions, initBehavior) {
           vueProps.push('name');
           vueProps.push('value');
         } else {
-          vueProps['name'] = String;
-          vueProps['value'] = null;
+          vueProps['name'] = {
+            type: String,
+            default: '' };
+
+          vueProps['value'] = {
+            type: [String, Number, Boolean, Array, Object, Date],
+            default: '' };
+
         }
       }
     });
@@ -805,7 +845,11 @@ function handleEvent(event) {var _this = this;
   event = wrapper$1(event);
 
   // [['tap',[['handle',[1,2,a]],['handle1',[1,2,a]]]]]
-  var eventOpts = (event.currentTarget || event.target).dataset.eventOpts;
+  var dataset = (event.currentTarget || event.target).dataset;
+  if (!dataset) {
+    return console.warn("\u4E8B\u4EF6\u4FE1\u606F\u4E0D\u5B58\u5728");
+  }
+  var eventOpts = dataset.eventOpts || dataset['event-opts']; // 支付宝 web-view 组件 dataset 非驼峰
   if (!eventOpts) {
     return console.warn("\u4E8B\u4EF6\u4FE1\u606F\u4E0D\u5B58\u5728");
   }
@@ -897,6 +941,9 @@ function parseBaseApp(vm, _ref3)
 
   var appOptions = {
     onLaunch: function onLaunch(args) {
+      if (this.$vm) {// 已经初始化过了，主要是为了百度，百度 onShow 在 onLaunch 之前
+        return;
+      }
       {
         if (!wx.canIUse('nextTick')) {// 事实 上2.2.3 即可，简单使用 2.3.0 的 nextTick 判断
           console.error('当前微信基础库版本过低，请将 微信开发者工具-详情-项目设置-调试基础库版本 更换为`2.3.0`以上');
@@ -1111,7 +1158,7 @@ function parseBasePage(vuePageOptions, _ref6)
     initRelation: initRelation });
 
 
-  initHooks(pageOptions.methods, hooks$1);
+  initHooks(pageOptions.methods, hooks$1, vuePageOptions);
 
   pageOptions.methods.onLoad = function (args) {
     this.$vm.$mp.query = args; // 兼容 mpvue
@@ -1154,7 +1201,7 @@ canIUses.forEach(function (canIUseApi) {
 
 var uni = {};
 
-if (typeof Proxy !== 'undefined') {
+if (typeof Proxy !== 'undefined' && "mp-weixin" !== 'app-plus') {
   uni = new Proxy({}, {
     get: function get(target, name) {
       if (name === 'upx2px') {
