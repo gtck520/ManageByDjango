@@ -26,7 +26,7 @@
 		</block>	
 		<block v-if="TabCur==2">
 			<view class="cu-list grid col-5">
-				<view class="cu-item" v-for="(item,index) in verseslist" :key="index" @tap="goContent" :data-booksn="item.VolumeSN_id" :data-chaptersn="item.ChapterSN">
+				<view class="cu-item" v-for="(item,index) in verseslist" :key="index" @tap="goContent" :data-booksn="item.VolumeSN_id" :data-chaptersn="item.ChapterSN" :data-versesn="item.VerseSN">
 					<text>{{item.VerseSN}}</text>
 				</view>
 			</view>
@@ -144,9 +144,10 @@ export default {
 				//console.log(this.verseslist)
 			});
 		},
-		goContent(e){			
+		goContent(e){	
+            localStorage.setItem("versesn",e.currentTarget.dataset.versesn);      
 			uni.navigateTo({
-				url:"content?booksn="+e.currentTarget.dataset.booksn+"&chaptersn="+e.currentTarget.dataset.chaptersn
+				url:"content?booksn="+e.currentTarget.dataset.booksn+"&chaptersn="+e.currentTarget.dataset.chaptersn+"&versesn="+e.currentTarget.dataset.versesn
 			});
 		}
 	}
