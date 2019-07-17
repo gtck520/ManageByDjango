@@ -75,6 +75,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+
+
 {
   data: function data() {
     return {
@@ -294,7 +296,23 @@ var render = function() {
           ],
           1
         ),
-        _vm._m(2)
+        _c(
+          "view",
+          { staticClass: "padding-sm" },
+          [
+            _c("navigator", { attrs: { url: "../../bible/search" } }, [
+              _c(
+                "view",
+                {
+                  staticClass:
+                    "bg-gradual-blue padding radius text-center shadow-blur"
+                },
+                [_c("view", { staticClass: "text-lg" }, [_vm._v("经文搜索")])]
+              )
+            ])
+          ],
+          1
+        )
       ])
     ],
     1
@@ -347,20 +365,6 @@ var staticRenderFns = [
           ])
         ])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("view", { staticClass: "padding-sm" }, [
-      _c(
-        "view",
-        {
-          staticClass: "bg-gradual-blue padding radius text-center shadow-blur"
-        },
-        [_c("view", { staticClass: "text-lg" }, [_vm._v("经文搜索")])]
-      )
     ])
   }
 ]

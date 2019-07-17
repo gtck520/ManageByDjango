@@ -1,6 +1,15 @@
 <import src="/colorui/components/cu-custom.vue.wxml" />
+<import src="/common/slots.wxml" />
+
+<template name="M00ff4add-default-00ff4add-0"></template>
+
+<template name="M00ff4add-backText-00ff4add-0">返回</template>
+
+<template name="M00ff4add-content-00ff4add-0">经文搜索</template>
 
 <template name="M3b621438-default-3b621438-0"></template>
+
+<template name="M3b621438-backText-3b621438-0">返回</template>
 
 <template name="M3b621438-content-3b621438-0">{{fullname}}</template>
 

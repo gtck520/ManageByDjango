@@ -1,8 +1,9 @@
 {
   "pages": [
-    "pages/bible/bible",
-    "pages/bible/content",
     "pages/tabbar/tabbar-1/tabbar-1",
+    "pages/bible/bible",
+    "pages/bible/search",
+    "pages/bible/content",
     "pages/basiclogin/registration",
     "pages/tabbar/tabbar-5/tabbar-5",
     "pages/mycenter/personalcenter/personalcenter",
@@ -59,6 +60,5 @@
         "text": "我"
       }
     ]
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }

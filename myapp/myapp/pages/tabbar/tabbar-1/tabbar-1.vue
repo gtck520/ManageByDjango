@@ -55,10 +55,12 @@
 				</navigator>
 			</view>
 			<view class="padding-sm">
+				<navigator url="../../bible/search">
 				<view class="bg-gradual-blue padding radius text-center shadow-blur">
 					<view class="text-lg">经文搜索</view>
 					<!-- <view class="margin-top-sm text-Abc">#0081ff - #1cbbb4</view> -->
 				</view>
+				</navigator>
 			</view>
 		</view>
 	</view>

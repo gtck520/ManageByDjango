@@ -2,7 +2,17 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/tabbar/tabbar-1/tabbar-1",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
             "path" : "pages/bible/bible",
+            "style" : {}
+        },
+		{
+            "path" : "pages/bible/search",
             "style" : {}
         },
 		{
@@ -12,12 +22,6 @@
                     "titleNView" : false //禁用原生导航栏
                 },
 				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/tabbar/tabbar-1/tabbar-1",
-			"style": {
-				"navigationBarTitleText": "uni-app"
 			}
 		},
 		{

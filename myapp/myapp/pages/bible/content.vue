@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
+			<block slot="backText">返回</block>
 			<block slot="content">{{fullname}}</block>
 			</cu-custom>
 		<view class="cu-bar bg-white solid-bottom margin-top">
@@ -8,9 +9,9 @@
 				<text class="cuIcon-title text-blue"></text>{{ChapterSN}}
 			</view>
 		</view>
-		<scroll-view class="padding bg-white" scroll-y scroll-with-animation style="height:calc(100vh - 250upx)" >
-			<view class="text-left padding" v-for="(item,index) in contentlist" :key="index" :id="'main-'+item.VerseSN" >
-				<view class='cu-tag round'>{{item.VerseSN}}</view>
+		<scroll-view class="padding bg-white" scroll-y scroll-with-animation :scroll-into-view="'main-'+nowversesn" style="height:calc(100vh - 250upx)" >
+			<view class="text-left padding" v-for="(item,index) in contentlist" :key="index" :id="'main-'+item.VerseSN" :class="nowversesn==item.VerseSN?'text-orange':''">
+				<view class='cu-tag round' >{{item.VerseSN}}</view>
 				{{item.Lection}}
 			</view>
 		</scroll-view>
@@ -22,6 +23,7 @@
 	export default {
 		data() {
 			return {
+				nowversesn:'0',
 				booksn:1,
 				versesn:1,
 				chaptersn:1,
@@ -35,6 +37,10 @@
 			this.chaptersn = o.chaptersn;
 			this.versesn = o.versesn;
 			this.getcontents(o.booksn,o.chaptersn);
+		},	
+		updated(){
+			//凡是数据渲染后再做dom处理的 需要放在updated里
+			this.nowversesn=localStorage.getItem("versesn");
 		},
 		methods: {
 			getcontents(booksn,chaptersn){

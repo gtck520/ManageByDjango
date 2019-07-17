@@ -144,7 +144,8 @@ export default {
 				//console.log(this.verseslist)
 			});
 		},
-		goContent(e){			
+		goContent(e){	
+            localStorage.setItem("versesn",e.currentTarget.dataset.versesn);      
 			uni.navigateTo({
 				url:"content?booksn="+e.currentTarget.dataset.booksn+"&chaptersn="+e.currentTarget.dataset.chaptersn+"&versesn="+e.currentTarget.dataset.versesn
 			});
