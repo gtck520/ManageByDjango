@@ -27,7 +27,7 @@ from ManageByDjango.settings import MEDIA_ROOT
 from users.views import SmsCodeViewset, UserViewset, UserInfoViewSet, CaptchaViewset, CaptchaCheckViewset
 from news.views import NewsViewSet
 from interactive.views import InteractivesViewSet
-from bible.views import BooksViewSet, ChapterViewset, VerseViewset, ContentsViewSet
+from bible.views import BooksViewSet, ChapterViewset, VerseViewset, ContentsViewSet, ContentsSearchViewSet
 
 router = DefaultRouter()
 
@@ -42,6 +42,7 @@ router.register(r'books', BooksViewSet, base_name="books")   # 圣经卷名
 router.register(r'books/(?P<booksn>[0-9]+)/chapters', ChapterViewset, base_name="chapters")   # 圣经章选
 router.register(r'books/(?P<booksn>[0-9]+)/chapters/(?P<chaptersn>[0-9]+)', VerseViewset, base_name="verses")   # 圣经节选
 router.register(r'contents', ContentsViewSet, base_name="contents")   # 经文内容
+router.register(r'contents/search/(?P<searchstr>.*)', ContentsSearchViewSet, base_name="contents")   # 经文搜索
 router.register(r'contents/(?P<booksn>[0-9]+)/(?P<chaptersn>[0-9]+)', ContentsViewSet, base_name="contents")   # 经文
 router.register(r'interactives', InteractivesViewSet, base_name="interactives")   # 交互模块
 
