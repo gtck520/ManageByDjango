@@ -7,10 +7,10 @@
 		<view class="cu-bar bg-white search fixed" :style="[{top:CustomBar + 'px'}]">
 			<view class="search-form round">
 				<text class="cuIcon-search"></text>
-				<input type="text" placeholder="输入搜索的关键词" confirm-type="search"></input>
+				<input type="text" placeholder="输入搜索的关键词" confirm-type="search" v-model="searchstr"></input>
 			</view>
 			<view class="action">
-				<button class="cu-btn bg-gradual-green shadow-blur round">搜索</button>
+				<button class="cu-btn bg-gradual-green shadow-blur round" @tap="getSearch()">搜索</button>
 			</view>
 		</view>
 		<view class="cu-bar bg-white solid-bottom margin-top">
@@ -18,91 +18,20 @@
 				<text class="cuIcon-title text-orange "></text> 搜索结果
 			</view>
 		</view>
-		<view class="cu-list menu-avatar">
-			<view class="cu-item">
-				<view class="cu-avatar round lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);"></view>
-				<view class="content">
-					<view class="text-grey">凯尔</view>
-					<view class="text-gray text-sm flex">
-						<view class="text-cut">
-							<text class="cuIcon-infofill text-red  margin-right-xs"></text>
-							我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。我已天理为凭，踏入这片荒芜，不再受凡人的枷锁遏制。
-						</view>
+		<view class="my-list">
+			<view class="my-item" v-for="(item,index) in searchlist" :key="index">
+				<!--<view class="my-avatar round lg "><view class="text-sm">{{item.VolumeSN.ShortName}}</view></view> -->
+				<view class="my-content">
+					<view class="text-grey">{{item.VolumeSN.FullName}}</view>
+					<view class="text-gray text-sm flex ">
+						<rich-text :nodes="item.content"></rich-text>
+						<!-- <rich-text :nodes="nodes"></rich-text> -->
 					</view>
 				</view>
-				<view class="action">
+<!-- 				<view class="action">
 					<view class="text-grey text-xs">22:20</view>
 					<view class="cu-tag round bg-grey sm">5</view>
-				</view>
-			</view>
-			<view class="cu-item">
-				<view class="cu-avatar round lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Taric.png);">
-					<view class="cu-tag badge">99+</view>
-				</view>
-				<view class="content">
-					<view class="text-grey">
-						<view class="text-cut">瓦洛兰之盾-塔里克</view>
-						<view class="cu-tag round bg-orange sm">战士</view>
-					</view>
-					<view class="text-gray text-sm flex">
-						<view class="text-cut">
-							塔里克是保护者星灵，用超乎寻常的力量守护着符文之地的生命、仁爱以及万物之美。塔里克由于渎职而被放逐，离开了祖国德玛西亚，前去攀登巨神峰寻找救赎，但他找到的却是来自星界的更高层的召唤。现在的塔里克与古代巨神族的神力相融合，以瓦洛兰之盾的身份，永不疲倦地警惕着阴险狡诈的虚空腐化之力。
-						</view>
-					</view>
-				</view>
-				<view class="action">
-					<view class="text-grey text-xs">22:20</view>
-					<view class="cuIcon-notice_forbid_fill text-gray"></view>
-				</view>
-			</view>
-			<view class="cu-item ">
-				<view class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/img/champion/Morgana.png);"></view>
-				<view class="content">
-					<view class="text-pink">
-						<view class="text-cut">莫甘娜</view>
-					</view>
-					<view class="text-gray text-sm flex">
-						<view class="text-cut">凯尔，你被自己的光芒变的盲目！</view>
-					</view>
-				</view>
-				<view class="action">
-					<view class="text-grey text-xs">22:20</view>
-					<view class="cu-tag round bg-red sm">5</view>
-				</view>
-			</view>
-			<view class="cu-item grayscale">
-				<view class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big81007.jpg);"></view>
-				<view class="content">
-					<view>
-						<view class="text-cut">伊泽瑞尔</view>
-						<view class="cu-tag round bg-orange sm">断开连接...</view>
-					</view>
-					<view class="text-gray text-sm flex">
-						<view class="text-cut"> 等我回来一个打十个</view>
-					</view>
-				</view>
-				<view class="action">
-					<view class="text-grey text-xs">22:20</view>
-					<view class="cu-tag round bg-red sm">5</view>
-				</view>
-			</view>
-			<view class="cu-item cur">
-				<view class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big81020.jpg);">
-					<view class="cu-tag badge"></view>
-				</view>
-				<view class="content">
-					<view>
-						<view class="text-cut">瓦罗兰大陆-睡衣守护者-新手保护营</view>
-						<view class="cu-tag round bg-orange sm">6人</view>
-					</view>
-					<view class="text-gray text-sm flex">
-						<view class="text-cut"> 伊泽瑞尔：<text class="cuIcon-locationfill text-orange margin-right-xs"></text> 传送中...</view>
-					</view>
-				</view>
-				<view class="action">
-					<view class="text-grey text-xs">22:20</view>
-					<view class="cuIcon-notice_forbid_fill text-gray"></view>
-				</view>
+				</view> -->
 			</view>
 		</view>
 
@@ -113,21 +42,87 @@
 	export default {
 		data() {
 			return {
+				nodes:'其他文本啊啊啊啊啊啊啊啊啊<div class="text-red">测试测试</div>',
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
-				hidden: true,
-				listCurID: '',
-				list: [],
-				listCur: '',
+				searchstr:'',
+				searchlist:[],
+				page: 1,				// 当前第几页
+				totalPages: 1			// 总页数
 
 			}
 		},
-		methods: {
+		onLoad() {
 
+		},
+		onReachBottom() {
+			var page = this.page + 1;	
+			this.getSearch(page);
+		},
+		methods: {
+			getSearch(pagea){
+				var isPage=false;//是否翻页
+				var page = this.page;
+				// 搜索内容
+				if (pagea != null && pagea != "" && pagea != undefined) {
+				var page = pagea;
+				isPage = true;
+				}
+				
+				uni.showLoading({
+					mask: true,
+					title: "请稍后..."
+				});
+				uni.showNavigationBarLoading();
+				
+				uni.request({
+				url: this.ApiHost+'v1/contents/search/'+this.searchstr+'/?page='+page,
+				data: {},
+				method: 'GET',
+				}) .then(data => {
+					var [error, res]  = data;
+					var searchlist = res.data.results;
+					if(isPage){
+						this.searchlist = this.searchlist.concat(searchlist);
+					}else{
+						this.searchlist = searchlist;
+					}
+					
+					this.totalPages = res.data.count;	// 获取总页数
+					this.page = page;		// 覆盖当前页面里的page
+					console.log(this.searchlist);
+					//隐藏加载框
+					uni.hideNavigationBarLoading();
+					uni.hideLoading();
+				})
+			}
 		}
+		// ,
+		// filters: {
+		//   redSearch: function (value,searchstr) {
+		// 	var newsearch = '<view class="text-red">'+searchstr+'</view>';
+		// 	var str=value.replace(searchstr,newsearch);
+		// 	console.log(str);
+		// 	return str;
+		//   }
+		// }
 	}
 </script>
 
 <style>
-
+.my-list{
+	display: flex;
+	flex-direction: column;
+}
+.my-item{
+	display: flex;
+	flex-direction: row;
+	background-color: #ffffff;
+	border-bottom: 6upx solid rgba(0, 0, 0, 0.05);
+}
+.my-content{	
+	width: 100%;
+	line-height: 1.6em;
+	padding: 20upx;
+}
 </style>

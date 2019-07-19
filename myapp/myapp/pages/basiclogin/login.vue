@@ -57,7 +57,7 @@
 						uni.setStorageSync("token", token);
 						// 切换页面跳转，使用tab切换的api
 						uni.switchTab({
-							url: "../tabbar/tabbar-5/tabbar-5",
+							url: "../tabbar/tabbar-5/my",
 							// success() {
 							// 	
 							// }

@@ -35,8 +35,19 @@ class ContentsSerializer(serializers.ModelSerializer):
     圣经内容
     """
     VolumeSN = BooksSerializer(read_only=True)
+    content = serializers.SerializerMethodField('get_search_str')
 
     class Meta:
         model = Contents
         fields = "__all__"
 
+    def get_search_str(self, obj):
+        try:
+            searchstr = self.context['searchstr']
+            newsearch = '<span class="text-red">' + searchstr + '</span>'
+            lectstr = obj.Lection
+            lectstr = lectstr.replace(searchstr, newsearch)
+            return lectstr
+        except Exception as e:
+            print(e)
+            return []

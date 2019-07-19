@@ -40,7 +40,7 @@
 		},	
 		updated(){
 			//凡是数据渲染后再做dom处理的 需要放在updated里
-			this.nowversesn=localStorage.getItem("versesn");
+			this.nowversesn=uni.getStorageSync("versesn");
 		},
 		methods: {
 			getcontents(booksn,chaptersn){

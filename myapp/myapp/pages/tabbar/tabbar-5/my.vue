@@ -101,7 +101,7 @@
 		height: 240upx;
 		padding: 20upx;
 		box-sizing: border-box;
-		background-color: #4cd964;
+		background-color: #0081ff;
 		flex-direction: row;
 		align-items: center;
 	}
@@ -171,7 +171,7 @@
 		height: 90upx;
 		line-height: 90upx;
 		font-size: 34upx;
-		color: #4cd964;
+		color: #0081ff;
 		text-align: center;
 		font-family: texticons;
 		margin-right: 20upx;

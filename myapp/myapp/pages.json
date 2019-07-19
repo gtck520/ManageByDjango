@@ -2,21 +2,33 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
+			"path": "pages/tabbar/tabbar-4/news",
+			"style": {}
+		},
+		{
+			"path": "pages/news/details",
+			"style": {}			
+		},
+		{
+			"path": "pages/news/videoDetails",
+			"style": {}			
+		},
+		{
+            "path" : "pages/bible/search",
+            "style" : {}
+        },
+		{
             "path" : "pages/question/index",
             "style" : {}
         },
         {
-			"path": "pages/tabbar/tabbar-1/tabbar-1",
+			"path": "pages/tabbar/tabbar-1/bible",
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
 		},
 		{
             "path" : "pages/bible/bible",
-            "style" : {}
-        },
-		{
-            "path" : "pages/bible/search",
             "style" : {}
         },
 		{
@@ -38,14 +50,14 @@
 			}
 		},
 		{
-			"path": "pages/tabbar/tabbar-5/tabbar-5",
+			"path": "pages/tabbar/tabbar-5/my",
 			"style": {
                 "app-plus" : {
                     "titleNView" : false //禁用原生导航栏
                 },
                 "navigationBarTextStyle" : "white",
                 "navigationBarTitleText" : "我的",
-                "navigationBarBackgroundColor" : "#4cd964"
+                "navigationBarBackgroundColor" : "#0081ff"
 				}
 		},
 		{
@@ -71,15 +83,11 @@
 			}
 		},
 		{
-			"path": "pages/tabbar/tabbar-2/tabbar-2",
+			"path": "pages/tabbar/tabbar-2/question",
 			"style": {}
 		},
 		{
 			"path": "pages/tabbar/tabbar-3/tabbar-3",
-			"style": {}
-		},
-		{
-			"path": "pages/tabbar/tabbar-4/tabbar-4",
 			"style": {}
 		},
 		{
@@ -119,13 +127,13 @@
 		"color": "black",
 		"selectedColor": "red",
 		"list": [{
-				"pagePath": "pages/tabbar/tabbar-1/tabbar-1",
+				"pagePath": "pages/tabbar/tabbar-1/bible",
 				"iconPath": "static/img/tabbar/home.png",
 				"selectedIconPath": "static/img/tabbar/homeactive.png",
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/tabbar/tabbar-2/tabbar-2",
+				"pagePath": "pages/tabbar/tabbar-2/question",
 				"iconPath": "static/img/tabbar/guanzhu.png",
 				"selectedIconPath": "static/img/tabbar/guanzhuactive.png",
 				"text": "关注"
@@ -137,13 +145,13 @@
 				"text": "定位"
 			},
 			{
-				"pagePath": "pages/tabbar/tabbar-4/tabbar-4",
+				"pagePath": "pages/tabbar/tabbar-4/news",
 				"iconPath": "static/img/tabbar/news.png",
 				"selectedIconPath": "static/img/tabbar/newsactive.png",
 				"text": "消息"
 			},
 			{
-				"pagePath": "pages/tabbar/tabbar-5/tabbar-5",
+				"pagePath": "pages/tabbar/tabbar-5/my",
 				"iconPath": "static/img/tabbar/me.png",
 				"selectedIconPath": "static/img/tabbar/meactive.png",
 				"text": "我"

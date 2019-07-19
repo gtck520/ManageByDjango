@@ -145,7 +145,8 @@ export default {
 			});
 		},
 		goContent(e){	
-            localStorage.setItem("versesn",e.currentTarget.dataset.versesn);      
+            //localStorage.setItem("versesn",e.currentTarget.dataset.versesn);     
+			uni.setStorageSync("versesn", e.currentTarget.dataset.versesn);
 			uni.navigateTo({
 				url:"content?booksn="+e.currentTarget.dataset.booksn+"&chaptersn="+e.currentTarget.dataset.chaptersn+"&versesn="+e.currentTarget.dataset.versesn
 			});
