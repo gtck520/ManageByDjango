@@ -198,3 +198,11 @@ pip install DjangoUeditor
 14. 跨域插件安装 pip install django-cors-headers
 ###############################################################################################
 15.pip install django-simple-captcha 图片验证码插件
+
+
+######################################################################################################
+16.爬虫依赖包安装
+pip install selenium
+pip install lxml
+pip install PyExecJS
+scrapy框架

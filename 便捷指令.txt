@@ -22,6 +22,9 @@ pip --default-timeout=100 install -U Pillow
 解决'str' object has no attribute 'decode' 方法：
 去掉decode方法。python3无此属性
 
+解决集成DjangoUeditor出现错误 render() got an unexpected keyword argument 'renderer'
+ File "C:\Users\Administrator\Envs\django\lib\site-packages\django\forms\boundfield.py", line 93, in as_widget 找到错误行 注释即可
+
 虚拟环境安装
 
 pip install virtualenv

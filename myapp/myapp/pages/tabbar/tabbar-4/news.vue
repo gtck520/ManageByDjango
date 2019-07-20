@@ -48,11 +48,21 @@
 							* class 和 style的绑定限制了一些语法，其他并没有不同
 						-->
 						<view v-for="(item, index) in tabItem.newsList" :key="index" class="news-item" @click="navToDetails(item)">
-							<text :class="['title', 'title'+item.type]">{{item.title}}</text>
-							<view v-if="item.images.length > 0" :class="['img-list', 'img-list'+item.type, item.images.length === 1 && item.type===3 ? 'img-list-single': '']">
-								<view 
-									v-for="(imgItem, imgIndex) in item.images" :key="imgIndex"
-									:class="['img-wrapper', 'img-wrapper'+item.type, item.images.length === 1 && item.type===3 ? 'img-wrapper-single': '']"
+							
+							<text :class="['title', item.news_type===2&&item.images_list.length>1?'title3':'title1']">{{item.title}}</text>							
+
+							<view v-if="item.images_list.length===1 || item.news_type===1 || item.news_type===3" :class="['img-list', 'img-list1', item.news_type===3 ? 'img-list-single': '']">
+								<view :class="['img-wrapper', 'img-wrapper1', item.news_type===3 ? 'img-wrapper-single': '']">
+									<image class="img" :src="item.images_list[0]"></image>
+									<view class="video-tip" v-if="item.videoSrc">
+										<image class="video-tip-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAEC0lEQVRoQ+2ajVEVMRDHdzuwA6ACpQKxArECtQKxAqECoQKhAqECoQKxAqEDrWCdn7Nx8vJy+bp3T4YhM2+O8S7J/rO7//2IKo9k6CPBIU9Acpo0s10ReSkiPA8mtH0tIncicqOqPDcyZmvEhX8rIu8cQI9gtyJyKSIXc0ENA3EAnxxAj/BT356LyEdV/TWyWDcQM3smIgA4mtjwXkQ4aX4Mngj3QkSYy5PfTmb+laoeLg7EzBDga8aEEB4TOVfVAKAoj2sUc+QXQC0PxMzY8Esi3W8ROVbV05FTDHPMDC1AEBzEcqY1AeLMQQxtXANuZvjMa/cb/i6Oqo9kQKCFI1WtLl7bfOq9mUHd3/w9ND1F5f+WKAJxn/gebQiIg1Y/mAEEUsDX8J0zVZ0iljoQZydAYLuMrYCIwXOQrYc2qREzw4E/RAu/X9KcRrUX5mWBODX+jBY/UdXjuZuNznd5PnscepNjtikgODJpRzCp3VFaHBU+MTEOkSDMIJ0hFKyMNSAZbZA2NMUJn7ujqjebABDWyDDnXpqb5YDEvnGvqsHZi7I5CMgBxiHDxRx5bmSYGZlyyADWmCwHBN8IwjdRH5Im3B+En5UIJuYFBeMnjFtV3Y/frwDJmNV+K/1NAGEvIv+pqp7MUU1GthXzSoHE+VSzWRU0EsuOaUDhw+aWmNdKOEiBxOzQlYkWNJIqAiAI0V0dmhkZNvkXYyUkpEDYhFJ17cOaWXQACUtxaPhgc9JpZvFBr+Rg/xNI8B+0w0lXR0LDzUCIoE0bNPpISdC1uJD7uJQVlzTyEIFQgFGhMpo10pVfDfgIwlAiU9s0af4h+gglARkE8WURZ98G/V65Fhal3zgg3qnqXpVK/IMG0/rhAOYExDh9KgZEcqy4DtlEirKpTgutqLjsnk5RnEaLWeaUhiY0srFOS1KxrqVPtTS+2by8xsdsnkONNN5G0pDCQcVmtcaoLYVVV63e0zDo8L+0OVgvrNy84lIXemRiM022CtjynWsabVCwMdpKXQeSOlZXcGwRsPWbJAgyLZvOPOh2UKZWn6xYS0Dibl/IVF+1VoytJ15wbqyCtmkwKdIZGnZZE+9tmbLI4mC8VRuDAG8xpo00sQFDi2iRJrabU2jGBYVVmbMKxJ0/dzfSXeGVzM3ZiRZt2tGsgmDdJiAFMGiHNPxijk+YGV1NsuHgD82aCB82A4lomdohvf8jrQm3s61XbzgzAMJtVXwWOPZhD7F0AXEwnBrqjzv1sRCACnfp/HvIdsNlTbiDn+pgDuVn3UCCxN4wA1Bods+xrr8R26/yuuuULh8p8D0nSzsTE8ldOZcAhttgKsUhAEM+Ujty1xIm1PJfOK7nCh/LM2xaNVDbfv8EZNsnXtvvDyrmF1FIBKIwAAAAAElFTkSuQmCC"></image>
+									</view>
+								</view>
+							</view>		
+							<view v-else-if="item.news_type===2" :class="['img-list', 'img-list3']">
+								<view v-if="imgIndex<3"
+									v-for="(imgItem, imgIndex) in item.images_list" :key="imgIndex"
+									:class="['img-wrapper', 'img-wrapper3']"
 								>
 									<image class="img" :src="imgItem"></image>
 									<view class="video-tip" v-if="item.videoSrc">
@@ -60,11 +70,13 @@
 									</view>
 								</view>
 							</view>
+							
 							<!-- 空图片占位 -->
-							<view v-else class="img-empty"></view>
-							<view :class="['bot', 'bot'+item.type]">
-								<text class="author">{{item.author}}</text>
-								<text class="time">{{item.time}}</text>
+							<view v-else class="img-empty"></view>						
+							
+							<view :class="['bot', item.news_type===2&&item.images_list.length>1?'bot3':'bot1']">
+								<text class="author">{{item.authorname}}</text>
+								<text class="time">{{item.add_time}}</text>
 							</view>
 						</view>
 						
@@ -80,7 +92,6 @@
 
 <script>
 	import mixAdvert from '@/components/mix-advert/vue/mix-advert';
-	import json from '@/json'
 	import mixPulldownRefresh from '@/components/mix-pulldown-refresh/mix-pulldown-refresh';
 	import mixLoadMore from '@/components/mix-load-more/mix-load-more';
 	let windowWidth = 0, scrollTimer = false, tabBar;
@@ -143,14 +154,26 @@
 			 */
 			//获取分类
 			loadTabbars(){
-				let tabList = json.tabList;
-				tabList.forEach(item=>{
-					item.newsList = [];
-					item.loadMoreStatus = 0;  //加载更多 0加载前，1加载中，2没有更多了
-					item.refreshing = 0;
-				})
-				this.tabBars = tabList;
-				this.loadNewsList('add');
+				
+				// 获取类别列表
+				uni.request({
+				url: this.ApiHost+'v1/newsclass/',
+				data: {},
+				method: 'GET',
+				}) .then(data => {
+					var [error, res]  = data;
+					let tabList = res.data;
+					tabList.forEach(item=>{
+						item.newsList = [];
+						item.loadMoreStatus = 0;  //加载更多 0加载前，1加载中，2没有更多了
+						item.refreshing = 0;
+					});
+					this.tabBars = tabList;
+					this.loadNewsList('add');
+					console.log(this.tabBars);
+				});
+				
+				
 			},
 			//新闻列表
 			loadNewsList(type){
@@ -168,10 +191,14 @@
 					tabItem.refreshing = true;
 				}
 				// #endif
-				
-				//setTimeout模拟异步请求数据
-				setTimeout(()=>{
-					let list = json.newsList;
+				// 获取新闻列表
+				uni.request({
+				url: this.ApiHost+'v1/news/',
+				data: {},
+				method: 'GET',
+				}) .then(data => {
+					var [error, res]  = data;
+					let list = res.data.results;
 					list.sort((a,b)=>{
 						return Math.random() > .5 ? -1 : 1; //静态数据打乱顺序
 					})
@@ -179,9 +206,10 @@
 						tabItem.newsList = []; //刷新前清空数组
 					}
 					list.forEach(item=>{
-						item.id = parseInt(Math.random() * 10000);
+						item.nid = parseInt(Math.random() * 10000);
 						tabItem.newsList.push(item);
 					})
+					console.log(tabItem.newsList);
 					//下拉刷新 关闭刷新动画
 					if(type === 'refresh'){
 						this.$refs.mixPulldownRefresh && this.$refs.mixPulldownRefresh.endPulldownRefresh();
@@ -194,15 +222,16 @@
 					if(type === 'add'){
 						tabItem.loadMoreStatus = tabItem.newsList.length > 40 ? 2: 0;
 					}
-				}, 600)
+				});
 			},
 			//新闻详情
 			navToDetails(item){
 				let data = {
+					nid: item.nid,
 					id: item.id,
 					title: item.title,
-					author: item.author,
-					time: item.time
+					authorname: item.authorname,
+					add_time: item.add_time,
 				}
 				let url = item.videoSrc ? 'videoDetails' : 'details'; 
 
