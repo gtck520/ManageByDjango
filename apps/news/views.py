@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework.response import Response
 # 普通分页
 from rest_framework.pagination import PageNumberPagination
 
@@ -34,6 +35,13 @@ class NewsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Gen
         # return Response(response)
         # 会带着链接,和总共的条数(不建议用)
         return page.get_paginated_response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        article = self.get_object()
+        article.click_nums += 1
+        article.save()
+        serializer = self.get_serializer(article)
+        return Response(serializer.data)
 
 
 class NewsClassViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):

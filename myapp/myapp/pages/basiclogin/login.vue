@@ -33,11 +33,12 @@
 				name : '',
 				pass : '',
 				modalName: null,
-				modalcontent:''
+				modalcontent:'',
+				isback:0
 			};
 		},
-		onLoad() {
-			
+		onLoad(option) {
+			this.isback=option.isback;//判断登录完成是否返回上一个页面
 		},
 		methods: {
 			login(e) {
@@ -55,13 +56,19 @@
 						var token = res.data.token;
 						// 保存用户token
 						uni.setStorageSync("token", token);
-						// 切换页面跳转，使用tab切换的api
-						uni.switchTab({
-							url: "../tabbar/tabbar-5/my",
-							// success() {
-							// 	
-							// }
-						});
+						if(this.isback==1)
+						{
+							uni.navigateBack();
+						}else{
+							// 切换页面跳转，使用tab切换的api
+							uni.switchTab({
+								url: "../tabbar/tabbar-5/my",
+								// success() {
+								// 	
+								// }
+							});
+						}
+						
 					}
 					else if(res.statusCode == 400){
 						var msg = '账号或密码错误，请重新输入';

@@ -54,13 +54,24 @@ class UserDetailSerializer(serializers.ModelSerializer):
     """
     用户详情序列化类
     """
+    nick_strname = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = User
-        fields = ("name", "gender", "birthday", "email", "mobile", "image")
+        fields = ("nick_strname", "username", "gender", "birthday", "email", "mobile", "image")
+
+    def get_nick_strname(self, obj):
+        if obj.nick_name:
+            nickname = obj.nick_name
+        elif obj.mobile:
+            nickname = obj.mobile
+        else:
+            nickname = obj.username
+        return nickname
 
 
 class UserRegSerializer(serializers.ModelSerializer):
-    code = serializers.CharField(required=True, write_only=True, max_length=4, min_length=4,label="验证码",
+    code = serializers.CharField(required=True, write_only=True, max_length=4, min_length=4, label="验证码",
                                  error_messages={
                                      "blank": "请输入验证码",
                                      "required": "请输入验证码",

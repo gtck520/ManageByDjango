@@ -16,19 +16,19 @@
 					<view class="actions" v-show="loading === false">
 						<view class="action-item">
 							<text class="yticon icon-dianzan-ash"></text>
-							<text>75</text>
+							<text class="cuIcon-appreciate" >75</text>
 						</view>
-						<view class="action-item">
+<!-- 						<view class="action-item">
 							<text class="yticon icon-dianzan-ash reverse"></text>
 							<text>6</text>
+						</view> -->
+						<view class="action-item">
+							<text class="yticon icon-shoucang active"></text>
+							<text class="cuIcon-favor" >收藏</text>
 						</view>
 						<view class="action-item">
 							<text class="yticon icon-fenxiang2"></text>
-							<text>分享</text>
-						</view>
-						<view class="action-item">
-							<text class="yticon icon-shoucang active"></text>
-							<text>收藏</text>
+							<text class="cuIcon-share">分享</text>
 						</view>
 					</view>
 				</view>
@@ -54,25 +54,27 @@
 					</view>
 					
 					<!-- 评论 -->
-					<view class="s-header">
-						<text class="tit">网友评论</text>
-					</view>
-					<view class="evalution">
-						<view  v-for="(item, index) in evaList" :key="index"
-							class="eva-item"
-						>
-							<image :src="item.src" mode="aspectFill"></image>
-							<view class="eva-right">
-								<text>{{item.nickname}}</text>
-								<text>{{item.time}}</text>
-								<view class="zan-box">
-									<text>{{item.zan}}</text>
-									<text class="yticon icon-shoucang"></text>
+				<view class="uni-padding-wrap">
+					<!-- 评论区 start -->
+					<view class="uni-comment">
+						<view class="uni-comment-list" v-for="(item,index) in commentList" :key="index">
+							<view class="uni-comment-face">
+								<image :src="item.user.image" mode="widthFix"></image>
+							</view>
+							<view class="uni-comment-body">
+								<view class="uni-comment-top">
+									<text>{{item.user.nick_strname}}</text>
+									<view class="cuIcon-appreciate">{{item.snap_nums}}</view>									
 								</view>
-								<text class="content">{{item.content}}</text>
+								<view class="uni-comment-content">{{item.comments}}</view>
+								<view class="uni-comment-date">
+									<view>2天前</view>
+									<view class="uni-comment-replay-btn">5回复</view>
+								</view>
 							</view>
 						</view>
 					</view>
+				</view>
 				</view>
 				<!-- 加载图标 -->
 				<mixLoading class="mix-loading" v-if="loading"></mixLoading>
@@ -87,9 +89,10 @@
 					type="text" 
 					placeholder="点评一下把.." 
 					placeholder-style="color:#adb1b9;"
+					v-model="mycomment"
 				/>
 			</view>
-			<text class="confirm-btn">提交</text>
+			<text class="confirm-btn" @tap="subcomment">提交</text>
 		</view>
 	</view>
 </template>
@@ -107,11 +110,14 @@
 				detailData: {},
 				newsList: [],
 				evaList: [],
+				commentList:[],
+				mycomment:''
 			}
 		},
 		onLoad(options){
 			this.detailData = JSON.parse(options.data);
 			this.getNewDetail();
+			this.getNewComment();
 			this.loadNewsList();
 			this.loadEvaList();
 		},
@@ -138,13 +144,76 @@
 			getNewDetail(){
 				// 获取新闻列表
 				uni.request({
-				url: this.ApiHost+'v1/news/'+this.detailData.id,
+				url: this.ApiHost+'v1/news/'+this.detailData.id+'/',
 				data: {},
 				method: 'GET',
 				}) .then(data => {
 					var [error, res]  = data;
 					this.detailData = res.data;
+					this.loading = false;
 				})
+			},
+			//获取评论列表
+			getNewComment(){
+				// 获取新闻列表
+				uni.request({
+				url: this.ApiHost+'v1/comments/?news='+this.detailData.id,
+				data: {},
+				method: 'GET',
+				}) .then(data => {
+					var [error, res]  = data;
+					this.commentList = res.data.results;
+				})
+			},
+			//提交评论
+			subcomment(){
+				if(this.mycomment==''){
+					uni.showModal({
+						title: '提示',
+						content: '评论内容不能为空',
+						showCancel:false,
+						success: function (res) {
+							
+						}
+					});
+					return false;
+				}
+				var comment_id=this.detailData.id;
+				var comment_type=1;
+				this.urlRequest({
+					url: 'v1/comments/',
+					data: {
+						'comment_id':comment_id,
+						'comment_type':comment_type,
+						'comments':this.mycomment,
+					},
+					method: 'POST',
+					success: res => {
+						if (res.statusCode == 200) {
+							
+							
+						}else{
+							if(res.data.user=='该字段是必填项。'||res.data.detail=='身份认证信息未提供。'){
+								uni.showModal({
+								title: '提示',
+								content: '您还未登录，请先登录',
+								showCancel:false,
+								success: function (res) {	
+									uni.navigateTo({
+										url:"../basiclogin/login?isback=1"
+									});
+								}
+								});
+							}
+							else{
+								console.log(res.data);
+							}
+							
+						}
+					},
+					fail: () => {},
+					complete: () => {}
+				});
 			}
 			
 		}
@@ -315,61 +384,89 @@
 		}
 	}
 	/* 评论 */
-	.evalution{
-		display:flex;
-		flex-direction:column;
+    .uni-padding-wrap {
+        padding: 30upx;
 		background: #fff;
-		padding: 20upx 0;
-	}
-	
-	.eva-item{
-		display:flex;
-		padding: 20upx 30upx;
-		position: relative;
-		image{
-			width: 60upx;
-			height: 60upx;
-			border-radius: 50px;
-			flex-shrink: 0;
-			margin-right: 24upx;
-		}
-		&:after{
-			content: '';
-			position: absolute;
-			left: 30upx;
-			bottom: 0;
-			right: 0;
-			height: 0;
-			border-bottom: 1px solid #eee;
-			transform: translateY(50%);
-		}
-		&:last-child:after{
-			border: 0;
-		}
-	}
-	.eva-right{
-		display:flex;
-		flex-direction:column;
-		flex: 1;
-		font-size: 26upx;
-		color: #909399;
-		position:relative;
-		.zan-box{
-			display:flex;
-			align-items:base-line;
-			position:absolute;
-			top: 10upx;
-			right: 10upx;
-			.yticon{
-				margin-left: 8upx; 
-			}
-		}
-		.content{
-			font-size: 28upx;
-			color: #333;
-			padding-top:20upx;
-		}
-	}
+    }
+
+    view {
+        font-size: 28upx;
+    }
+
+    .uni-comment {
+        padding: 5rpx 0;
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+    }
+
+    .uni-comment-list {
+        flex-wrap: nowrap;
+        padding: 10rpx 0;
+        margin: 10rpx 0;
+        width: 100%;
+        display: flex;
+    }
+
+    .uni-comment-face {
+        width: 70upx;
+        height: 70upx;
+        border-radius: 100%;
+        margin-right: 20upx;
+        flex-shrink: 0;
+        overflow: hidden;
+    }
+
+    .uni-comment-face image {
+        width: 100%;
+        border-radius: 100%;
+    }
+
+    .uni-comment-body {
+        width: 100%;
+    }
+
+    .uni-comment-top {
+        flex-direction: row;
+        justify-content: space-between;
+        display: flex !important;
+        line-height: 1.5em;
+    }
+
+    .uni-comment-top text {
+        color: #0A98D5;
+        font-size: 24upx;
+    }
+
+    .uni-comment-date {
+        line-height: 38upx;
+        flex-direction: row;
+        justify-content: space-between;
+        display: flex !important;
+        flex-grow: 1;
+    }
+
+    .uni-comment-date view {
+        color: #666666;
+        font-size: 24upx;
+        line-height: 38upx;
+    }
+
+    .uni-comment-content {
+        line-height: 1.6em;
+        font-size: 28upx;
+        padding: 8rpx 0;
+    }
+
+    .uni-comment-replay-btn {
+        background: #f2f3f3;
+        font-size: 24upx;
+        line-height: 28upx;
+        padding: 5rpx 20upx;
+        border-radius: 30upx;
+        color: #333 !important;
+        margin: 0 10upx;
+    }
 	
 	/* 底部 */
 	.bottom{

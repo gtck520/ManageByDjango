@@ -28,6 +28,7 @@ from users.views import SmsCodeViewset, UserViewset, UserInfoViewSet, CaptchaVie
 from news.views import NewsViewSet, NewsClassViewSet
 from interactive.views import InteractivesViewSet
 from bible.views import BooksViewSet, ChapterViewset, VerseViewset, ContentsViewSet, ContentsSearchViewSet
+from operation.views import UserCommentsViewSet
 
 router = DefaultRouter()
 
@@ -37,14 +38,18 @@ router.register(r'captchas/check', CaptchaCheckViewset, base_name="captcha")   #
 
 router.register(r'users', UserViewset, base_name="users")   # 用户模块
 router.register(r'userinfo', UserInfoViewSet, base_name="users")   # 用户验证信息模块
+
 router.register(r'newsclass', NewsClassViewSet, base_name="newsclass")   # 新闻类别模块
 router.register(r'news', NewsViewSet, base_name="news")   # 新闻模块
+router.register(r'comments', UserCommentsViewSet, base_name="comments")   # 评论模块
+
 router.register(r'books', BooksViewSet, base_name="books")   # 圣经卷名
 router.register(r'books/(?P<booksn>[0-9]+)/chapters', ChapterViewset, base_name="chapters")   # 圣经章选
 router.register(r'books/(?P<booksn>[0-9]+)/chapters/(?P<chaptersn>[0-9]+)', VerseViewset, base_name="verses")   # 圣经节选
 router.register(r'contents', ContentsViewSet, base_name="contents")   # 经文内容
 router.register(r'contents/search/(?P<searchstr>.*)', ContentsSearchViewSet, base_name="contents")   # 经文搜索
 router.register(r'contents/(?P<booksn>[0-9]+)/(?P<chaptersn>[0-9]+)', ContentsViewSet, base_name="contents")   # 经文
+
 router.register(r'interactives', InteractivesViewSet, base_name="interactives")   # 交互模块
 
 

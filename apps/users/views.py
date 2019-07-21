@@ -175,13 +175,22 @@ class UserInfoViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
 
     def list(self, request, *args, **kwargs):
-        token = request.META.get("HTTP_JWT")
-        if token:
-            user_dict = jwt_decode_handler(token=token)
-            user = User.objects.get(id=user_dict['user_id'])
+        user = request.user
+        if user:
             serializer = self.get_serializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+    # 原来自己写的验证jwt
+    # def list(self, request, *args, **kwargs):
+    #     token = request.META.get("HTTP_JWT")
+    #     if token:
+    #         user_dict = jwt_decode_handler(token=token)
+    #         user = User.objects.get(id=user_dict['user_id'])
+    #         serializer = self.get_serializer(user)
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+    #     else:
+    #         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 

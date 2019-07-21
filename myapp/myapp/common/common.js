@@ -24,8 +24,8 @@ exports.install = function (Vue, options) {
 			// data: JSON.stringify(Object.assign(param.data, baseParam)),
 			data:param.data,
 			header: {
-				'JWT': token,
-				'Accept': 'application/json',
+				'Authorization': 'JWT '+token,
+				'Accept': '*/*',
 				'Content-Type': 'application/json', //自定义请求头信息
 			},
 			method: param.method,
