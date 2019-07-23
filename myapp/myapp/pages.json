@@ -61,10 +61,6 @@
 				}
 		},
 		{
-			"path": "pages/mycenter/personalcenter/personalcenter",
-			"style": {}
-		},
-		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "启动页"

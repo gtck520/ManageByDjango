@@ -106,12 +106,9 @@
 			loadTabbars(){
 				
 				// 获取类别列表
-				uni.request({
-				url: this.ApiHost+'v1/newsclass/',
-				data: {},
-				method: 'GET',
-				}) .then(data => {
-					var [error, res]  = data;
+				this.loading = true
+				this.$api.loadTabbars({noncestr: Date.now()}).then((res)=>{
+					this.loading = false;
 					let tabList = res.data;
 					tabList.forEach(item=>{
 						item.newsList = [];
@@ -120,10 +117,10 @@
 					});
 					this.tabBars = tabList;
 					this.loadNewsList('add');
-					console.log(this.tabBars);
-				});
-				
-				
+				}).catch((err)=>{
+					this.loading = false;
+					console.log('request fail', err);
+				});				
 			},
 			//新闻列表
 			loadNewsList(type){
@@ -140,14 +137,11 @@
 				else if(type === 'refresh'){
 					tabItem.refreshing = true;
 				}
-				// #endif
+				// #endif			
 				// 获取新闻列表
-				uni.request({
-				url: this.ApiHost+'v1/news/',
-				data: {},
-				method: 'GET',
-				}) .then(data => {
-					var [error, res]  = data;
+				this.loading = true
+				this.$api.loadNewsList({noncestr: Date.now()}).then((res)=>{
+					this.loading = false;
 					let list = res.data.results;
 					list.sort((a,b)=>{
 						return Math.random() > .5 ? -1 : 1; //静态数据打乱顺序
@@ -159,7 +153,7 @@
 						item.nid = parseInt(Math.random() * 10000);
 						tabItem.newsList.push(item);
 					})
-					console.log(tabItem.newsList);
+					// console.log(tabItem.newsList);
 					//下拉刷新 关闭刷新动画
 					if(type === 'refresh'){
 						this.$refs.mixPulldownRefresh && this.$refs.mixPulldownRefresh.endPulldownRefresh();
@@ -172,7 +166,10 @@
 					if(type === 'add'){
 						tabItem.loadMoreStatus = tabItem.newsList.length > 40 ? 2: 0;
 					}
-				});
+				}).catch((err)=>{
+					this.loading = false;
+					console.log('request fail', err);
+				});	
 			},
 			//新闻详情
 			navToDetails(item){

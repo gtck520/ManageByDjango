@@ -68,7 +68,8 @@ export default {
 			}, {
 				name: 'favorfill',
 				isShow: true
-			}]
+			}],
+			loading:false
 		};
 	},
 	onLoad() {
@@ -91,15 +92,15 @@ export default {
 			this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
 		},
 		getVolume(){
-			// 获取卷列表
-			uni.request({
-			url: this.ApiHost+'v1/books/',
-			data: {},
-			method: 'GET',
-			}) .then(data => {
-				var [error, res]  = data;
+			// 获取卷列表			
+			this.loading = true
+			this.$api.getVolume({noncestr: Date.now()}).then((res)=>{
+				this.loading = false;
 				this.bookslist = res.data;
-			})
+			}).catch((err)=>{
+				this.loading = false;
+				console.log('request fail', err);
+			});
 		},
 		getChapters(e){
 			if(e != null && e != "" && e != undefined){
@@ -109,19 +110,19 @@ export default {
 			}else{
 				var booksn = this.booksn;//初始化时默认加载 第一卷
 			}
-			// 获取章列表
-			uni.request({
-			url: this.ApiHost+'v1/books/'+booksn+'/chapters/',
-			data: {},
-			method: 'GET',
-			}) .then(data => {
-				var [error, res]  = data;
+			// 获取章列表			
+			this.loading = true
+			this.$api.getChapters(booksn,{noncestr: Date.now()}).then((res)=>{
+				this.loading = false;
 				this.chapterslist = res.data;
 				if(e != null && e != "" && e != undefined){
 				this.tabSelect(e);
 				}
-				
-			});
+			}).catch((err)=>{
+				this.loading = false;
+				console.log('request fail', err);
+			});		
+
 		},
 		getVerses(e){
 			if(e != null && e != "" && e != undefined){
@@ -131,18 +132,17 @@ export default {
 				var chaptersn = 1;
 			}
 			// 获取节列表
-			uni.request({
-			url: this.ApiHost+'v1/books/'+this.booksn+'/chapters/'+chaptersn+'/',
-			data: {},
-			method: 'GET',
-			}) .then(data => {
-				var [error, res]  = data;
+			this.loading=true;
+			this.$api.getVerses(this.booksn,chaptersn,{noncestr: Date.now()}).then((res)=>{
+				this.loading = false;
 				this.verseslist = res.data;
 				if(e != null && e != "" && e != undefined){
 				this.tabSelect(e);
 				}
-				//console.log(this.verseslist)
-			});
+			}).catch((err)=>{
+				this.loading = false;
+				console.log('request fail', err);
+			});	
 		},
 		goContent(e){	
             //localStorage.setItem("versesn",e.currentTarget.dataset.versesn);     

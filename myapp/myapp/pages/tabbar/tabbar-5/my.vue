@@ -59,18 +59,21 @@
 				}
 			}
 		},
-		onShow() {
-			var me = this;
+		async onShow() {
 			// 使用挂载方法获取用户数据
-			me.getGlobalUser(function(data){
-				if(data!=null){
-					me.Islogin = true;
-					me.userinfo = data;
-				}else{
-					me.Islogin = false;
-					me.userinfo = {};					
-				}
-			});
+			
+			this.loading = true
+			let res = await this.$api.getGlobalUser({noncestr: Date.now()});
+			this.loading = false;
+			if(res.data!=null &&  res.data != undefined){
+				uni.setStorageSync('userinfo',res.data);
+				this.Islogin = true;
+				this.userinfo = res.data;
+			}else{
+				this.Islogin = false;
+				this.userinfo = {};					
+			}
+			
 		}
 	}
 </script>

@@ -29,7 +29,8 @@
 				chaptersn:1,
 				contentlist:{},
 				fullname:'',
-				ChapterSN:''
+				ChapterSN:'',
+				loading:false
 			}
 		},
 		onLoad(o) {
@@ -44,17 +45,16 @@
 		},
 		methods: {
 			getcontents(booksn,chaptersn){
-				// 获取节列表
-				uni.request({
-				url: this.ApiHost+'v1/contents/'+booksn+'/'+chaptersn+'/',
-				data: {},
-				method: 'GET',
-				}) .then(data => {
-					var [error, res]  = data;
+				// 获取经文内容
+				this.loading = true
+				this.$api.getcontents(booksn,chaptersn,{noncestr: Date.now()}).then((res)=>{
+					this.loading = false;
 					this.contentlist = res.data;
 					this.ChapterSN=res.data[0]['ChapterSN']
 					this.fullname=res.data[0]['VolumeSN'].FullName;
-					//console.log(this.contentlist);
+				}).catch((err)=>{
+					this.loading = false;
+					console.log('request fail', err);
 				});
 			}
 		}

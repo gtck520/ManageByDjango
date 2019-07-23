@@ -6,11 +6,12 @@ from rest_framework import permissions
 from rest_framework import status
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import SessionAuthentication
-
-from .serializers import UserCommentsSerializer, UserCommentsSubSerializer
-from .models import UserComments
 # 普通分页
 from rest_framework.pagination import PageNumberPagination
+
+from .serializers import UserCommentsSerializer, UserCommentsSubSerializer, UserFavoriteSerializer
+from .models import UserComments, UserFavorite
+from common.permissions import IsOwnerOrReadOnly
 # Create your views here.
 
 
@@ -59,14 +60,12 @@ class UserCommentsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
         # 会带着链接,和总共的条数(不建议用)
         return page.get_paginated_response(serializer.data)
 
-    def create(self, request, *args, **kwargs):
-        request.data['user'] = request.user.id
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        re_dict = serializer.data
-        headers = self.get_success_headers(serializer.data)
-        return Response(re_dict, status=status.HTTP_201_CREATED, headers=headers)
+
+class UserFavoriteViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
+    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated)
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    serializer_class = UserFavoriteSerializer
+    queryset = UserFavorite.objects.all()
 
 
 # 自定义分页类

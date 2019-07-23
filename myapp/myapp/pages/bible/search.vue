@@ -42,13 +42,13 @@
 	export default {
 		data() {
 			return {
-				nodes:'其他文本啊啊啊啊啊啊啊啊啊<div class="text-red">测试测试</div>',
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
 				searchstr:'',
 				searchlist:[],
 				page: 1,				// 当前第几页
-				totalPages: 1			// 总页数
+				totalPages: 1			,// 总页数
+				loading:false
 
 			}
 		},
@@ -75,12 +75,9 @@
 				});
 				uni.showNavigationBarLoading();
 				
-				uni.request({
-				url: this.ApiHost+'v1/contents/search/'+this.searchstr+'/?page='+page,
-				data: {},
-				method: 'GET',
-				}) .then(data => {
-					var [error, res]  = data;
+				this.loading = true
+				this.$api.getSearch(this.searchstr,page,{noncestr: Date.now()}).then((res)=>{
+					this.loading = false;
 					var searchlist = res.data.results;
 					if(isPage){
 						this.searchlist = this.searchlist.concat(searchlist);
@@ -94,7 +91,10 @@
 					//隐藏加载框
 					uni.hideNavigationBarLoading();
 					uni.hideLoading();
-				})
+				}).catch((err)=>{
+					this.loading = false;
+					console.log('request fail', err);
+				});
 			}
 		}
 		// ,

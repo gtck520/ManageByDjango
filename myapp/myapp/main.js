@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import App from './App'
-import common from './common/common.js'
+import api from '@/common/vmeitime-http/'
+
 
 import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom',cuCustom)
 
 Vue.config.productionTip = false
-Vue.prototype.ApiHost='http://127.0.0.1:8000/';
-Vue.use(common)
+// 全局挂载后使用数据接口
+Vue.prototype.$api = api
+
 App.mpType = 'app'
 
 const app = new Vue({

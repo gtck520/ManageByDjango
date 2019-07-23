@@ -41,6 +41,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     articleclass = ArticleClassSerializer()
     images_list = serializers.SerializerMethodField('get_image_arr')   # 文章图片列表 用于前台显示缩略图
     authorname = serializers.SerializerMethodField('get_author_name')   # 文章作者
+    add_time = serializers.DateTimeField(read_only=True, format='%Y-%m-%d %H:%M')
 
     class Meta:
         model = Articles

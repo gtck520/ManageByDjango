@@ -28,7 +28,7 @@ from users.views import SmsCodeViewset, UserViewset, UserInfoViewSet, CaptchaVie
 from news.views import NewsViewSet, NewsClassViewSet
 from interactive.views import InteractivesViewSet
 from bible.views import BooksViewSet, ChapterViewset, VerseViewset, ContentsViewSet, ContentsSearchViewSet
-from operation.views import UserCommentsViewSet
+from operation.views import UserCommentsViewSet, UserFavoriteViewSet
 
 router = DefaultRouter()
 
@@ -42,6 +42,7 @@ router.register(r'userinfo', UserInfoViewSet, base_name="users")   # 用户验�
 router.register(r'newsclass', NewsClassViewSet, base_name="newsclass")   # 新闻类别模块
 router.register(r'news', NewsViewSet, base_name="news")   # 新闻模块
 router.register(r'comments', UserCommentsViewSet, base_name="comments")   # 评论模块
+router.register(r'favorite', UserFavoriteViewSet, base_name="favorite")   # 收藏模块
 
 router.register(r'books', BooksViewSet, base_name="books")   # 圣经卷名
 router.register(r'books/(?P<booksn>[0-9]+)/chapters', ChapterViewset, base_name="chapters")   # 圣经章选

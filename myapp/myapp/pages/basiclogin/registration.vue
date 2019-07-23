@@ -51,7 +51,8 @@
 					count: this.seconds
 				},
 				modalName: null,
-				modalcontent:''
+				modalcontent:'',
+				loading:false
 			}
 		},
 		onLoad() {
@@ -62,27 +63,18 @@
 		},
 		methods: {
 			sendCode: function () {				
-				//校验图片验证码
-				uni.request({
-				url: this.ApiHost+'v1/captchas/check/',
-				data: {
+				//校验图片验证码				
+				this.$api.checkCaptchas({
 					hashkey:this.hashkey,
 					imagecode:this.captchaCode
-				},
-				method: 'POST',
-				}) .then(data => {//data为一个数组，数组第一项为错误信息，第二项为返回数据
-					var [error, res]  = data;
+				}).then((res)=>{
 					if (res.statusCode == 200) {
 						if(res.data.status==true){
-							// 发送手机验证码
-							uni.request({
-							url: this.ApiHost+'v1/codes/',
-							data: {
+							 this.$api.sendCode({
 								mobile:this.mobile,
-							},
-							method: 'POST',
-							}).then(datab => {//data为一个数组，数组第一项为错误信息，第二项为返回数据
-								var [errorb, resb]  = datab;
+							}).then((resb)=>{
+								console.log('aaaa')
+								console.log(resb)
 								if(resb.statusCode == 201){			
 									
 									this.codeBtn.waitingCode = true;
@@ -102,33 +94,37 @@
 									console.log(resb);
 									this.showModal(resb.data.mobile);
 								}								
-							});							
+							}).catch((err)=>{
+								console.log('request fail', err);
+								this.showModal('手机码发送失败');
+							})						
 						}else{
 							this.showModal('图片验证码错误');
 						}
 					}else{
 						this.showModal('图片验证码错误');
 					}
-				});	
+				}).catch((err)=>{
+				    console.log('request fail', err);
+				});			
+
 			},
 			changeimg:function(){
 				//获取图片验证码
-				this.urlRequest({
-				url: 'v1/captchas/',
-				data: {},
-				method: 'GET',
-				success: res => {
-					console.log(res);
+				this.loading = true;
+				 this.$api.getCaptcha().then((res)=>{
+                    this.loading = false;
 					if (res.statusCode == 200) {
 						this.captchaImg = res.data.image_url;
 						this.hashkey = res.data.hashkey;
 					}
 					else{
 					}
-				},
-				fail: () => {},
-				complete: () => {}
-				});
+                }).catch((err)=>{
+                    this.loading = false;
+                    console.log('request fail', err);
+                });				
+
 			},			
 			gotoLogin: function () {
 				uni.navigateTo({
@@ -137,28 +133,27 @@
 			},
 			register(e){
 				// 注册
-				uni.request({
-				url: this.ApiHost+'v1/users/',
-				data: {
+				this.$api.register({
 					username :this.mobile,
 					code :this.mobilecode,
 					mobile:this.mobile,
 					password:this.password
-				},
-				method: 'POST',
-				}) .then(data => {//data为一个数组，数组第一项为错误信息，第二项为返回数据
-					var [error, res]  = data;
+				}).then((res)=>{
+                    this.loading = false;
 					var token = res.data.token;
 					// 保存用户token
 					uni.setStorageSync("token", token);
 					// 切换页面跳转，使用tab切换的api
 					uni.switchTab({
-						url: "../tabbar/tabbar-5/tabbar-5",
+						url: "../tabbar/tabbar-5/my",
 						// success() {
 						// 	
 						// }
 					});
-				})
+                }).catch((err)=>{
+                    this.loading = false;
+                    console.log('request fail', err);
+                });					
 			},
 			showModal(msg) {
 				this.modalName = 'Modal';

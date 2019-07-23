@@ -31,6 +31,7 @@ class UserFavorite(models.Model):
     class Meta:
         verbose_name = u"用户收藏"
         verbose_name_plural = verbose_name
+        unique_together = ("user", "fav_id", "fav_type")
 
 
 class UserSnap(models.Model):

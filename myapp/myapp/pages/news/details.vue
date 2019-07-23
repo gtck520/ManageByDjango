@@ -16,19 +16,19 @@
 					<view class="actions" v-show="loading === false">
 						<view class="action-item">
 							<text class="yticon icon-dianzan-ash"></text>
-							<text class="cuIcon-appreciate" >75</text>
+							<text >75</text>
 						</view>
 <!-- 						<view class="action-item">
 							<text class="yticon icon-dianzan-ash reverse"></text>
 							<text>6</text>
 						</view> -->
-						<view class="action-item">
-							<text class="yticon icon-shoucang active"></text>
-							<text class="cuIcon-favor" >收藏</text>
+						<view class="action-item" @click="setfavorite">
+							<text class="yticon icon-shoucang " :class="myfav==true?'active':''"></text>
+							<text >收藏</text>
 						</view>
 						<view class="action-item">
 							<text class="yticon icon-fenxiang2"></text>
-							<text class="cuIcon-share">分享</text>
+							<text >分享</text>
 						</view>
 					</view>
 				</view>
@@ -56,24 +56,26 @@
 					<!-- 评论 -->
 				<view class="uni-padding-wrap">
 					<!-- 评论区 start -->
-					<view class="uni-comment">
-						<view class="uni-comment-list" v-for="(item,index) in commentList" :key="index">
+					<scroll-view class="uni-comment" scroll-y scroll-with-animation :scroll-into-view="'main-'+nowcomment">
+						<view class="uni-comment-list" v-for="(item,index) in commentList" :key="index" :id="'main-'+item.id">
 							<view class="uni-comment-face">
 								<image :src="item.user.image" mode="widthFix"></image>
 							</view>
 							<view class="uni-comment-body">
 								<view class="uni-comment-top">
 									<text>{{item.user.nick_strname}}</text>
-									<view class="cuIcon-appreciate">{{item.snap_nums}}</view>									
+									<view class="cuIcon-appreciate" v-if="item.snap_nums>0">{{item.snap_nums}}</view>
+									<view class="cuIcon-appreciate" v-else>赞</view>									
 								</view>
 								<view class="uni-comment-content">{{item.comments}}</view>
 								<view class="uni-comment-date">
-									<view>2天前</view>
-									<view class="uni-comment-replay-btn">5回复</view>
+									<view>{{item.add_time}}</view>
+									<view class="uni-comment-replay-btn" v-if="item.comentslist.count >0 ">{{item.comentslist.count}} 回复</view>
+									<view class="uni-comment-replay-btn" v-else>回复</view>
 								</view>
 							</view>
 						</view>
-					</view>
+					</scroll-view>
 				</view>
 				</view>
 				<!-- 加载图标 -->
@@ -111,7 +113,9 @@
 				newsList: [],
 				evaList: [],
 				commentList:[],
-				mycomment:''
+				nowcomment:'',
+				mycomment:'',
+				myfav:false,//是否收藏当前文章
 			}
 		},
 		onLoad(options){
@@ -141,29 +145,24 @@
 				this.evaList = await json.evaList;
 			},
 			//获取新闻详细
-			getNewDetail(){
-				// 获取新闻列表
-				uni.request({
-				url: this.ApiHost+'v1/news/'+this.detailData.id+'/',
-				data: {},
-				method: 'GET',
-				}) .then(data => {
-					var [error, res]  = data;
-					this.detailData = res.data;
-					this.loading = false;
-				})
+			async getNewDetail(){
+				//此处为封装请求之异步用法
+                this.loading = true
+                let res = await this.$api.getNewDetail(this.detailData.id,{noncestr: Date.now()});
+                this.loading = false;
+				this.detailData = res.data;
 			},
 			//获取评论列表
 			getNewComment(){
-				// 获取新闻列表
-				uni.request({
-				url: this.ApiHost+'v1/comments/?news='+this.detailData.id,
-				data: {},
-				method: 'GET',
-				}) .then(data => {
-					var [error, res]  = data;
+				// 获取评论列表
+				this.loading = true
+				this.$api.getNewComment(this.detailData.id,{noncestr: Date.now()}).then((res)=>{
+					this.loading = false;
 					this.commentList = res.data.results;
-				})
+				}).catch((err)=>{
+					this.loading = false;
+					console.log('request fail', err);
+				});		
 			},
 			//提交评论
 			subcomment(){
@@ -180,40 +179,88 @@
 				}
 				var comment_id=this.detailData.id;
 				var comment_type=1;
-				this.urlRequest({
-					url: 'v1/comments/',
-					data: {
+									
+				this.loading = true;
+				this.$api.subcomment({
 						'comment_id':comment_id,
 						'comment_type':comment_type,
 						'comments':this.mycomment,
-					},
-					method: 'POST',
-					success: res => {
-						if (res.statusCode == 200) {
-							
-							
-						}else{
-							if(res.data.user=='该字段是必填项。'||res.data.detail=='身份认证信息未提供。'){
-								uni.showModal({
-								title: '提示',
-								content: '您还未登录，请先登录',
-								showCancel:false,
-								success: function (res) {	
-									uni.navigateTo({
-										url:"../basiclogin/login?isback=1"
-									});
-								}
+					}).then((res)=>{
+					this.loading = false;
+					if (res.statusCode == 201) {
+							this.mycomment='';
+							let userinfo=uni.getStorageSync('userinfo');
+							let item = res.data;
+							let user ={
+								'nick_strname':userinfo.nick_strname,
+								'image':userinfo.image
+							}
+							let comentslist={
+								'count':0
+							}
+							item.user = user;
+							item.comentslist=comentslist;
+							this.commentList.push(item);
+							this.nowversesn='main'+res.data.id;							
+						
+					}else{
+						if(res.data.user=='该字段是必填项。'||res.data.detail=='身份认证信息未提供。'){
+							uni.showModal({
+							title: '提示',
+							content: '您还未登录，请先登录',
+							showCancel:false,
+							success: function (res) {	
+								uni.navigateTo({
+									url:"../basiclogin/login?isback=1"
 								});
 							}
-							else{
-								console.log(res.data);
-							}
-							
+							});
 						}
-					},
-					fail: () => {},
-					complete: () => {}
-				});
+						else if(res.data.detail=='Signature has expired.'){
+							uni.showModal({
+							title: '提示',
+							content: '您的登录信息已过期，请重新登录',
+							showCancel:false,
+							success: function (res) {	
+								uni.navigateTo({
+									url:"../basiclogin/login?isback=1"
+								});
+							}
+							});
+						}else{
+							console.log(res)
+						}
+						
+					}
+				}).catch((err)=>{
+					this.loading = false;
+					console.log('request fail', err);
+				});		
+			},
+			//获取对当前文章的收藏信息
+			getfavorite(){
+				
+			},
+			setfavorite(){				
+				this.loading = true
+				if(this.myfav==false){
+					var data={
+					'fav_id':this.detailData.id,
+					'fav_type':1,
+					};
+					var deleteid=0;
+				}
+				else{
+					var data={};
+					var deleteid=1;
+				}
+				this.$api.setfavorite(this.myfav,data,deleteid).then((res)=>{
+					this.loading = false;
+					this.myfav=!this.myfav;
+				}).catch((err)=>{
+					this.loading = false;
+					console.log('request fail', err);
+				});				
 			}
 			
 		}

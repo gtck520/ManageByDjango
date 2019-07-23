@@ -41,17 +41,11 @@
 			this.isback=option.isback;//判断登录完成是否返回上一个页面
 		},
 		methods: {
-			login(e) {
-				var url = 'login/';
-				this.urlRequest({
-				url: url,
-				data: {
+			login(e) {				
+				this.$api.login({
 					username : this.name,
 					password : this.pass
-				},
-				method: 'POST',
-				success: res => {
-					console.log(res);
+				}).then((res)=>{
 					if (res.statusCode == 200) {
 						var token = res.data.token;
 						// 保存用户token
@@ -67,17 +61,17 @@
 								// 	
 								// }
 							});
-						}
-						
+						}						
 					}
 					else if(res.statusCode == 400){
 						var msg = '账号或密码错误，请重新输入';
 						this.showModal(msg);
 					}
-				},
-				fail: () => {},
-				complete: () => {}
-				});
+                }).catch((err)=>{
+                    this.loading = false;
+                    console.log('request fail', err);
+                });
+
 			},
 			showModal(msg) {
 				this.modalName = 'Modal';
