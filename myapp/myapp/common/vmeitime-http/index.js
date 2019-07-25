@@ -27,16 +27,37 @@ export const login = (data) => {
 export const register = (data) => {
     return http.post('v1/users/',data);
 }
+//验证接口登录状态
+export const islogin = (data) => {
+	if(data.detail=='Signature has expired.' || data.detail=='身份认证信息未提供。'){
+		uni.showModal({
+		title: '提示',
+		content: '您还未登录或登录已过期，请登录',
+		showCancel:false,
+		success: function (res) {	
+			uni.navigateTo({
+				url:"../basiclogin/login?isback=1"
+			});
+		}
+		});
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+//判断返回数据是否请求成功
+export const isSuccess = (statusCode) => {
+	if(statusCode===200 || statusCode===201 ||statusCode===204){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
 
 // 读取用户信息
 export const getGlobalUser = (data) => {
-	//设置请求前拦截器
-	let token = uni.getStorageSync('token'); 
-	http.interceptor.request = (config) => {
-		config.header = {
-			"Authorization": 'JWT '+token
-		}
-	}
     return http.get('v1/userinfo/',data);
 }
 
@@ -102,32 +123,18 @@ export const getNewComment = (newid,data) => {
 
 // 提交评论信息
 export const subcomment = (data) => {
-	//设置请求前拦截器
-	let token = uni.getStorageSync('token'); 
-	http.interceptor.request = (config) => {
-		config.header = {
-			"Authorization": 'JWT '+token
-		}
-	}
     return http.post('v1/comments/',data);
 }
 
 // 获取用户对所选新闻的收藏信息
 export const getfavorite = (newid,data) => {
-    return http.get('v1/comments/?type=1&news='+newid,data);
+    return http.get('v1/favorite/?news='+newid,data);
 }
 
-// 收藏
+// 收藏、取消收藏
 export const setfavorite = (status,data,deleteid) => {
 	if (!deleteid) {
 		deleteid = 0;
-	}
-	//设置请求前拦截器
-	let token = uni.getStorageSync('token'); 
-	http.interceptor.request = (config) => {
-		config.header = {
-			"Authorization": 'JWT '+token
-		}
 	}
 	if(status==false){
 		//未收藏则执行收藏
@@ -139,9 +146,30 @@ export const setfavorite = (status,data,deleteid) => {
    
 }
 
+// 获取用户对所选新闻的点赞信息
+export const getsnap = (newid,type,data) => {
+    return http.get('v1/snap/?news='+newid+'&type='+type,data);
+}
+
+// 点赞、取消点赞
+export const setsnap = (status,data,deleteid) => {
+	if (!deleteid) {
+		deleteid = 0;
+	}
+	if(status==false){
+		//未收藏则执行收藏
+		return http.post('v1/snap/',data);
+	}else{
+		//已收藏则删除收藏
+		return http.delete('v1/snap/'+deleteid+'/',data);
+	}
+   
+}
 // 默认全部导出  import api from '@/common/vmeitime-http/'
 export default {
+	isSuccess,
 	login,
+	islogin,
     register,
 	getCaptcha,
 	checkCaptchas,
@@ -158,5 +186,7 @@ export default {
 	subcomment,
 	getfavorite,
 	setfavorite,
-	getGlobalUser
+	getGlobalUser,
+	getsnap,
+	setsnap
 }

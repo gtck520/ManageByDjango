@@ -7,7 +7,7 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
-from .models import UserComments, UserFavorite
+from .models import UserComments, UserFavorite, UserSnap
 from users.serializers import UserDetailSerializer
 
 
@@ -23,7 +23,8 @@ class UserCommentsSubSerializer(serializers.ModelSerializer):
 
 
 class UserCommentsSerializer(serializers.ModelSerializer):
-    comentslist = serializers.SerializerMethodField('get_coments_list')   # 文章图片列表 用于前台显示缩略图
+    comentslist = serializers.SerializerMethodField('get_coments_list')
+    snapid = serializers.SerializerMethodField('get_snap_status')
     user = UserDetailSerializer(read_only=True)
     add_time = serializers.DateTimeField(read_only=True, format='%Y-%m-%d %H:%M')
 
@@ -43,6 +44,17 @@ class UserCommentsSerializer(serializers.ModelSerializer):
             print(e)
             return {'count': 0}
 
+    def get_snap_status(self, obj):
+        try:
+            snap = UserSnap.objects.filter(snap_type=2, snap_id=obj.id, user=self.context['request'].user).first()
+            if snap:
+                return snap.id
+            else:
+                return 0
+        except Exception as e:
+            print(e)
+            return 0
+
 
 class UserFavoriteSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(
@@ -60,3 +72,21 @@ class UserFavoriteSerializer(serializers.ModelSerializer):
         ]
 
         fields = ('id', 'user', 'fav_id', 'fav_type')
+
+
+class UserSnapSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+
+    class Meta:
+        model = UserSnap
+        validators = [
+            UniqueTogetherValidator(
+                queryset=UserSnap.objects.all(),
+                fields=('user', 'snap_id', 'snap_type'),
+                message="已经点赞"
+            )
+        ]
+
+        fields = ('id', 'user', 'snap_id', 'snap_type')

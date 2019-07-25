@@ -9,9 +9,10 @@ from rest_framework.authentication import SessionAuthentication
 # 普通分页
 from rest_framework.pagination import PageNumberPagination
 
-from .serializers import UserCommentsSerializer, UserCommentsSubSerializer, UserFavoriteSerializer
-from .models import UserComments, UserFavorite
+from .serializers import UserCommentsSerializer, UserCommentsSubSerializer, UserFavoriteSerializer, UserSnapSerializer
+from .models import UserComments, UserFavorite, UserSnap
 from common.permissions import IsOwnerOrReadOnly
+from common import permissions as permissions1
 # Create your views here.
 
 
@@ -19,6 +20,9 @@ class UserCommentsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
     """
     list:
         获取用户评论列表
+        可选get参数:
+            news 具体评论数据id
+            type 评论类型 1 文章 2 评论
     retrieve:
         某条详细评论
     create:
@@ -46,8 +50,9 @@ class UserCommentsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
 
     def list(self, request, *args, **kwargs):
         news_id = request.GET.get('news', 0)
+        comment_type = request.GET.get('type', 1)   # 默认提取文章的所有评论
         if int(news_id) > 0:
-            comment_list = UserComments.objects.filter(comment_id=news_id, comment_type=1)   # 提取文章的所有评论
+            comment_list = UserComments.objects.filter(comment_id=news_id, comment_type=comment_type)
         else:
             comment_list = []
         page = MyPageNumberPagination()
@@ -61,11 +66,75 @@ class UserCommentsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixi
         return page.get_paginated_response(serializer.data)
 
 
-class UserFavoriteViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
-    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated)
+class UserFavoriteViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    list:
+        获取收藏信息
+        可选get参数:
+            news 具体收藏的数据id
+            type 收藏类型 1 文章 2 经文
+    create:
+        创建收藏
+    destroy:
+        取消收藏
+    """
+    # permission_classes = (IsOwnerOrReadOnly, IsAuthenticated)
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     serializer_class = UserFavoriteSerializer
     queryset = UserFavorite.objects.all()
+
+    def get_permissions(self):
+        if self.action == "list":
+            return []
+        elif self.action == "create" or self.action == "destroy":
+            return [permissions.IsAuthenticated(), permissions1.IsOwnerOrReadOnly()]
+
+        return []
+
+    def list(self, request, *args, **kwargs):
+        news_id = request.GET.get('news', 0)
+        fav_type = request.GET.get('type', 1)   # 默认为文章收藏信息
+        if int(news_id) > 0:
+            favorite_list = UserFavorite.objects.filter(fav_id=news_id, fav_type=fav_type, user=self.request.user).first()
+        else:
+            favorite_list = []
+        serializer = self.get_serializer(favorite_list)
+        return Response(serializer.data)
+
+
+class UserSnapViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    list:
+        获取点赞信息
+        可选get参数:
+            news 具体收藏的数据id
+            type 点赞类型 1 文章 2 评论 3 经文
+    create:
+        点赞
+    destroy:
+        取消点赞
+    """
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    serializer_class = UserSnapSerializer
+    queryset = UserSnap.objects.all()
+
+    def get_permissions(self):
+        if self.action == "list":
+            return []
+        elif self.action == "create" or self.action == "destroy":
+            return [permissions.IsAuthenticated(), permissions1.IsOwnerOrReadOnly()]
+
+        return []
+
+    def list(self, request, *args, **kwargs):
+        news_id = request.GET.get('news', 0)
+        snap_type = request.GET.get('type', 1)   # 默认为文章收藏信息
+        if int(news_id) > 0:
+            snap_list = UserSnap.objects.filter(snap_id=news_id, snap_type=snap_type, user=self.request.user).first()
+        else:
+            snap_list = []
+        serializer = self.get_serializer(snap_list)
+        return Response(serializer.data)
 
 
 # 自定义分页类

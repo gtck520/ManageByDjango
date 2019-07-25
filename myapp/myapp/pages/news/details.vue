@@ -14,9 +14,9 @@
 					<rich-text :nodes="detailData.detail"></rich-text>
 					
 					<view class="actions" v-show="loading === false">
-						<view class="action-item">
-							<text class="yticon icon-dianzan-ash"></text>
-							<text >75</text>
+						<view class="action-item" @click="setsnap" data-typeid='1'>
+							<text class="yticon icon-dianzan-ash " :class="mysnap==true?'active':''"></text>
+							<text >{{snap_nums}}</text>
 						</view>
 <!-- 						<view class="action-item">
 							<text class="yticon icon-dianzan-ash reverse"></text>
@@ -64,8 +64,8 @@
 							<view class="uni-comment-body">
 								<view class="uni-comment-top">
 									<text>{{item.user.nick_strname}}</text>
-									<view class="cuIcon-appreciate" v-if="item.snap_nums>0">{{item.snap_nums}}</view>
-									<view class="cuIcon-appreciate" v-else>赞</view>									
+									<view class="cuIcon-appreciate " :style="item.snapid>0?'color: #ec706b;':''" v-if="item.snap_nums>0" @click="setsnap" data-typeid='2' :data-snapid='item.snapid' :data-comentid='item.id'>{{item.snap_nums}}</view>
+									<view class="cuIcon-appreciate " v-else @click="setsnap" data-typeid='2' :data-snapid='item.snapid' :data-comentid='item.id'>赞</view>									
 								</view>
 								<view class="uni-comment-content">{{item.comments}}</view>
 								<view class="uni-comment-date">
@@ -116,6 +116,10 @@
 				nowcomment:'',
 				mycomment:'',
 				myfav:false,//是否收藏当前文章
+				deleteid:0,//收藏id
+				snap_nums:0,
+				mysnap:false,//是否点赞当前文章
+				deletesnap:0,//点赞id
 			}
 		},
 		onLoad(options){
@@ -124,6 +128,8 @@
 			this.getNewComment();
 			this.loadNewsList();
 			this.loadEvaList();
+			this.getfavorite();
+			this.getsnap();
 		},
 		methods: {
 			//获取推荐列表
@@ -151,6 +157,7 @@
                 let res = await this.$api.getNewDetail(this.detailData.id,{noncestr: Date.now()});
                 this.loading = false;
 				this.detailData = res.data;
+				this.snap_nums = res.data.snap_nums;
 			},
 			//获取评论列表
 			getNewComment(){
@@ -204,33 +211,7 @@
 							this.nowversesn='main'+res.data.id;							
 						
 					}else{
-						if(res.data.user=='该字段是必填项。'||res.data.detail=='身份认证信息未提供。'){
-							uni.showModal({
-							title: '提示',
-							content: '您还未登录，请先登录',
-							showCancel:false,
-							success: function (res) {	
-								uni.navigateTo({
-									url:"../basiclogin/login?isback=1"
-								});
-							}
-							});
-						}
-						else if(res.data.detail=='Signature has expired.'){
-							uni.showModal({
-							title: '提示',
-							content: '您的登录信息已过期，请重新登录',
-							showCancel:false,
-							success: function (res) {	
-								uni.navigateTo({
-									url:"../basiclogin/login?isback=1"
-								});
-							}
-							});
-						}else{
-							console.log(res)
-						}
-						
+						this.$api.islogin(res.data);					
 					}
 				}).catch((err)=>{
 					this.loading = false;
@@ -239,8 +220,20 @@
 			},
 			//获取对当前文章的收藏信息
 			getfavorite(){
+				this.$api.getfavorite(this.detailData.id,{}).then((res)=>{					
+					this.loading = false;
+					if(res.data.id>0)
+					{	
+						this.myfav=true;
+						this.deleteid=res.data.id;
+					}				
+				}).catch((err)=>{
+					this.loading = false;
+					console.log(err);
+				});	
 				
 			},
+			//收藏与取消
 			setfavorite(){				
 				this.loading = true
 				if(this.myfav==false){
@@ -248,15 +241,79 @@
 					'fav_id':this.detailData.id,
 					'fav_type':1,
 					};
-					var deleteid=0;
 				}
 				else{
 					var data={};
-					var deleteid=1;
 				}
-				this.$api.setfavorite(this.myfav,data,deleteid).then((res)=>{
+				this.$api.setfavorite(this.myfav,data,this.deleteid).then((res)=>{
+					this.loading = false;					
+					if(this.$api.islogin(res.data)){
+						this.myfav=!this.myfav;
+						this.deleteid=res.data.id;
+					}
+				}).catch((err)=>{
 					this.loading = false;
-					this.myfav=!this.myfav;
+					console.log('request fail', err);
+				});				
+			},
+			//获取对当前文章的点赞信息
+			getsnap(){
+				this.$api.getsnap(this.detailData.id,1,{}).then((res)=>{
+				this.loading = false;						
+				if(res.data.id>0)
+				{	
+					this.mysnap=true;
+					this.deletesnap=res.data.id;
+				}			
+				}).catch((err)=>{
+					this.loading = false;
+					console.log('request fail', err);
+				});	
+				
+			},
+			//点赞与取消
+			setsnap(e){			
+				var type=e.currentTarget.dataset.typeid;
+				var sid=0;
+				var issnap=false;
+				var deletesnap=0;
+				if(type==1){
+					sid=this.detailData.id;
+					issnap=this.mysnap;
+					deletesnap=this.deletesnap
+				}else{
+					sid=e.currentTarget.dataset.comentid;
+					issnap=e.currentTarget.dataset.snapid>0?true:false;	
+					deletesnap=e.currentTarget.dataset.snapid;
+				}
+				 
+				this.loading = true
+				if(issnap==false){
+					var data={
+					'snap_id':sid,
+					'snap_type':type,
+					};
+				}
+				else{
+					var data={};
+				}
+				this.$api.setsnap(issnap,data,deletesnap).then((res)=>{
+					this.loading = false;		
+					if(this.$api.islogin(res.data)){
+						if(type==1){
+							this.mysnap=!issnap;
+							this.deletesnap=res.data.id;
+							if(this.mysnap){
+								this.snap_nums=this.snap_nums+1;
+							}else{
+								this.snap_nums=this.snap_nums-1;
+							}
+						}else{
+							this.getNewComment();
+						}
+						
+						
+					}
 				}).catch((err)=>{
 					this.loading = false;
 					console.log('request fail', err);

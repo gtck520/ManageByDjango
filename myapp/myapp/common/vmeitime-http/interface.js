@@ -59,10 +59,16 @@ export default {
 		options.method = options.method || this.config.method
 		//TODO 加密数据
 		
-		//TODO 数据签名
-		// _token = {'token': getStorage(STOREKEY_LOGIN).token || 'undefined'},
-		// _sign = {'sign': sign(JSON.stringify(options.data))}
-		// options.header = Object.assign({}, options.header, _token,_sign) 
+		//设置请求前拦截器
+		
+		let token = uni.getStorageSync('token'); 
+		if(token!=null && token!=undefined && token!=''){
+			//TODO 数据签名
+			var tokenstr = {'Authorization': 'JWT '+token}
+			 //_sign = {'sign': sign(JSON.stringify(options.data))}
+			options.header = Object.assign({}, options.header, tokenstr) 
+		}
+
 		
 	   
 		return new Promise((resolve, reject) => {
@@ -72,7 +78,7 @@ export default {
 				let statusCode = response.statusCode
 				response.config = _config
 				if (process.env.NODE_ENV === 'development') {
-					if (statusCode === 200||statusCode === 201) {
+					if (statusCode === 200||statusCode === 201||statusCode === 204) {
 						console.log("【" + _config.requestId + "】 结果：" + JSON.stringify(response.data))
 					}
 				}
@@ -84,7 +90,7 @@ export default {
 				}
 				// 统一的响应日志记录
 				_reslog(response)
-				if (statusCode === 200||statusCode === 201) { //成功
+				if (statusCode === 200||statusCode === 201||statusCode === 204||statusCode === 401) { //成功
 					resolve(response);
 				} else {
 					reject(response)
