@@ -9,8 +9,9 @@ from rest_framework.authentication import SessionAuthentication
 # 普通分页
 from rest_framework.pagination import PageNumberPagination
 
-from .serializers import UserCommentsSerializer, UserCommentsSubSerializer, UserFavoriteSerializer, UserSnapSerializer
-from .models import UserComments, UserFavorite, UserSnap
+from .serializers import UserCommentsSerializer, UserCommentsSubSerializer, UserFavoriteSerializer, UserSnapSerializer\
+    , UserInteractivesSerializer
+from .models import UserComments, UserFavorite, UserSnap, UserInteractives
 from common.permissions import IsOwnerOrReadOnly
 from common import permissions as permissions1
 # Create your views here.
@@ -134,6 +135,43 @@ class UserSnapViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.
         else:
             snap_list = []
         serializer = self.get_serializer(snap_list)
+        return Response(serializer.data)
+
+
+class UserInteractivesViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin,
+                              mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    list:
+        提取作答信息
+        可选get参数:
+            user 具体某用户id
+            interactives 具体某一问题id
+    update:
+        修改答案
+    create:
+        作答
+    destroy:
+        取消作答
+    """
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    serializer_class = UserInteractivesSerializer
+    queryset = UserInteractives.objects.all()
+
+    def get_permissions(self):
+        if self.action == "list":
+            return []
+        elif self.action != "list":
+            return [permissions.IsAuthenticated(), permissions1.IsOwnerOrReadOnly()]
+
+        return []
+
+    def list(self, request, *args, **kwargs):
+        user_id = request.GET.get('user', 0)
+        if int(user_id) > 0:
+            interactive_list = UserInteractives.objects.filter(user=user_id)
+        else:
+            interactive_list = UserInteractives.objects.all()
+        serializer = self.get_serializer(interactive_list)
         return Response(serializer.data)
 
 

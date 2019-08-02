@@ -1,6 +1,9 @@
 <template>
 	<view class="content">
-		页面 - 2
+		<view class="padding">
+			<button class="cu-btn block bg-blue margin-tb-sm lg" type="" @click="gotoTest">开始</button>
+			<button class="cu-btn block line-blue margin-tb-sm lg" disabled>无效状态</button>
+		</view>
 	</view>
 </template>
 
@@ -15,6 +18,11 @@
 
 		},
 		methods: {
+			gotoTest(){
+				uni.navigateTo({
+					url:"../../question/catalogue"
+				})
+			}
 
 		}
 	}

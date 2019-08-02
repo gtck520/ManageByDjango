@@ -26,9 +26,9 @@ from captcha.views import captcha_refresh
 from ManageByDjango.settings import MEDIA_ROOT
 from users.views import SmsCodeViewset, UserViewset, UserInfoViewSet, CaptchaViewset, CaptchaCheckViewset
 from news.views import NewsViewSet, NewsClassViewSet
-from interactive.views import InteractivesViewSet
+from interactive.views import InteractivesViewSet, InteractiveClassViewSet
 from bible.views import BooksViewSet, ChapterViewset, VerseViewset, ContentsViewSet, ContentsSearchViewSet
-from operation.views import UserCommentsViewSet, UserFavoriteViewSet, UserSnapViewSet
+from operation.views import UserCommentsViewSet, UserFavoriteViewSet, UserSnapViewSet, UserInteractivesViewSet
 
 router = DefaultRouter()
 
@@ -52,7 +52,9 @@ router.register(r'contents', ContentsViewSet, base_name="contents")   # 经文�
 router.register(r'contents/search/(?P<searchstr>.*)', ContentsSearchViewSet, base_name="contents")   # 经文搜索
 router.register(r'contents/(?P<booksn>[0-9]+)/(?P<chaptersn>[0-9]+)', ContentsViewSet, base_name="contents")   # 经文
 
+router.register(r'interactiveclass', InteractiveClassViewSet, base_name="interactiveclass")   # 交互目录
 router.register(r'interactives', InteractivesViewSet, base_name="interactives")   # 交互模块
+router.register(r'userinteractives', UserInteractivesViewSet, base_name="userinteractives")   # 用户交互作答
 
 
 urlpatterns = [

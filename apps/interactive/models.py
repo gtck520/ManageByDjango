@@ -3,6 +3,8 @@ from datetime import datetime
 
 from django.db import models
 
+from news.models import Articles
+from bible.models import Contents
 # Create your models here.
 
 
@@ -46,12 +48,13 @@ class Interactives(models.Model):
                                     verbose_name='上一个内容')
     next_content = models.ManyToManyField('self', related_name='nexts', verbose_name='下一个内容', blank=True)
     content_type = models.IntegerField(choices=((0, "只读内容"), (1, "问题内容"), (2, "选项内容")), default=0, verbose_name=u"内容类型")
-    sort = models.IntegerField( verbose_name=u"排序", default=0)
-    intermessage = models.ForeignKey(InteractiveMessage, verbose_name=u"提示消息", on_delete=models.CASCADE)
+    answer_type = models.IntegerField(choices=((0, "单选"), (1, "多选"), (2, "填写内容")), default=0, verbose_name=u"答题类型")
+    sort = models.IntegerField(verbose_name=u"排序", default=0)
+    intermessage = models.ForeignKey(InteractiveMessage, verbose_name=u"提示消息", on_delete=models.CASCADE, null=True, blank=True)
     background = models.ImageField(upload_to="interactive/%Y/%m", default=u"interactive/default.png",
                                    null=True, blank=True, verbose_name=u"背景图", max_length=100)
-    bible_contents = models.CharField(max_length=100, null=True, blank=True, verbose_name=u"引用经文")
-    new_contents = models.CharField(max_length=100, null=True, blank=True, verbose_name=u"引用新闻")
+    bible_contents = models.CharField(max_length=50, null=True, blank=True, verbose_name=u"引用经文")
+    new_contents = models.ForeignKey(Articles, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=u"引用新闻")
     add_time = models.DateTimeField(default=datetime.now,  verbose_name=u"添加时间")
 
     class Meta:

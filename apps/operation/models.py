@@ -48,7 +48,8 @@ class UserSnap(models.Model):
 class UserInteractives(models.Model):
     user = models.ForeignKey(UserProfile, verbose_name=u"用户", on_delete=models.CASCADE)
     interactive = models.ForeignKey(Interactives, verbose_name=u"交互内容", on_delete=models.CASCADE)
-    has_read = models.BooleanField(default=False, verbose_name=u"是否已读")
+    has_read = models.BooleanField(default=False, verbose_name=u"是否已答")
+    answer = models.CharField(max_length=255, verbose_name=u"答题内容")
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
 
     class Meta:

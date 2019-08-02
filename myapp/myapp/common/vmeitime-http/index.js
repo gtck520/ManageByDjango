@@ -58,6 +58,15 @@ export const isSuccess = (statusCode) => {
 
 // 读取用户信息
 export const getGlobalUser = (data) => {
+	//设置请求结束后拦截器
+	http.interceptor.response = (response) => {
+		console.log('个性化response....')
+		if(response.data.detail=='Signature has expired.'){
+			uni.removeStorageSync('token');
+		}
+		//判断返回状态 执行相应操作
+		return response;
+	}
     return http.get('v1/userinfo/',data);
 }
 
@@ -157,14 +166,29 @@ export const setsnap = (status,data,deleteid) => {
 		deleteid = 0;
 	}
 	if(status==false){
-		//未收藏则执行收藏
+		//未点赞则执行点赞
 		return http.post('v1/snap/',data);
 	}else{
-		//已收藏则删除收藏
+		//已点赞则删除点赞
 		return http.delete('v1/snap/'+deleteid+'/',data);
 	}
    
 }
+
+// 获取问题目录
+export const getCatalogue = (data) => {
+    return http.get('v1/interactiveclass/',data);
+}
+
+// 获取该目录第一问题
+export const gotoInteractives = (classid,data) => {
+    return http.get('v1/interactives/?class='+classid,data);
+}
+// 获取交互详细内容
+export const getInteractives = (interid,data) => {
+    return http.get('v1/interactives/'+interid+'/',data);
+}
+
 // 默认全部导出  import api from '@/common/vmeitime-http/'
 export default {
 	isSuccess,
@@ -188,5 +212,8 @@ export default {
 	setfavorite,
 	getGlobalUser,
 	getsnap,
-	setsnap
+	setsnap,
+	getCatalogue,
+	gotoInteractives,
+	getInteractives
 }

@@ -14,6 +14,7 @@ from random import choice
 from rest_framework import permissions
 from rest_framework import authentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.authentication import SessionAuthentication
 
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler, jwt_decode_handler
 
@@ -171,16 +172,18 @@ class UserInfoViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     根据token获得用户详细信息
     """
+
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     serializer_class = UserDetailSerializer
     queryset = User.objects.all()
 
     def list(self, request, *args, **kwargs):
         user = request.user
-        if user:
+        if user.id is None:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
             serializer = self.get_serializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     # 原来自己写的验证jwt
     # def list(self, request, *args, **kwargs):

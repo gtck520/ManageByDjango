@@ -92,6 +92,8 @@
 			}
 		},
 		async onLoad() {
+			//验证token是否过期并提取用户信息
+			let res = await this.$api.getGlobalUser({noncestr: Date.now()});
 			// 获取屏幕宽度
 			windowWidth = uni.getSystemInfoSync().windowWidth;
 			this.loadTabbars();

@@ -22,12 +22,25 @@ class InteractiveMessageSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class InteractivesSerializer(serializers.ModelSerializer):
+class InteractivesSerializer1(serializers.ModelSerializer):
     """
-        新闻文章序列化类
+        交互内容序列化类
     """
     interclass = InteractiveClassSerializer()
     intermessage = InteractiveMessageSerializer()
+
+    class Meta:
+        model = Interactives
+        fields = "__all__"
+
+
+class InteractivesSerializer(serializers.ModelSerializer):
+    """
+        交互内容序列化类
+    """
+    interclass = InteractiveClassSerializer()
+    intermessage = InteractiveMessageSerializer()
+    next_content = InteractivesSerializer1(many=True)
 
     class Meta:
         model = Interactives

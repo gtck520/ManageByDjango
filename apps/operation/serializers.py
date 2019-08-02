@@ -7,7 +7,7 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
-from .models import UserComments, UserFavorite, UserSnap
+from .models import UserComments, UserFavorite, UserSnap, UserInteractives
 from users.serializers import UserDetailSerializer
 
 
@@ -90,3 +90,21 @@ class UserSnapSerializer(serializers.ModelSerializer):
         ]
 
         fields = ('id', 'user', 'snap_id', 'snap_type')
+
+
+class UserInteractivesSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+
+    class Meta:
+        model = UserInteractives
+        validators = [
+            UniqueTogetherValidator(
+                queryset=UserInteractives.objects.all(),
+                fields=('user', 'interactive'),
+                message="已经作答"
+            )
+        ]
+
+        fields = "__all__"

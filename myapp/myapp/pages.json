@@ -1,6 +1,15 @@
 {
 	"pages": [
-		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages        
+		{
+            "path" : "pages/question/catalogue",
+			"style": {
+                "app-plus" : {
+                    "titleNView" : false //禁用原生导航栏
+                },
+				"navigationBarTitleText": "目录"
+			}
+        },
 		{
 			"path": "pages/tabbar/tabbar-4/news",
 			"style": {}
@@ -105,6 +114,7 @@
 			}
 		}
 	    
+
     ],
 	"globalStyle": {
 		"mp-alipay": {
@@ -124,15 +134,11 @@
 		"selectedColor": "red",
 		"list": [{
 				"pagePath": "pages/tabbar/tabbar-1/bible",
-				"iconPath": "static/img/tabbar/home.png",
-				"selectedIconPath": "static/img/tabbar/homeactive.png",
-				"text": "首页"
+				"text": "圣经"
 			},
 			{
 				"pagePath": "pages/tabbar/tabbar-2/question",
-				"iconPath": "static/img/tabbar/guanzhu.png",
-				"selectedIconPath": "static/img/tabbar/guanzhuactive.png",
-				"text": "关注"
+				"text": "学习"
 			},
 			{
 				"pagePath": "pages/tabbar/tabbar-3/tabbar-3",
@@ -142,14 +148,10 @@
 			},
 			{
 				"pagePath": "pages/tabbar/tabbar-4/news",
-				"iconPath": "static/img/tabbar/news.png",
-				"selectedIconPath": "static/img/tabbar/newsactive.png",
-				"text": "消息"
+				"text": "文章"
 			},
 			{
 				"pagePath": "pages/tabbar/tabbar-5/my",
-				"iconPath": "static/img/tabbar/me.png",
-				"selectedIconPath": "static/img/tabbar/meactive.png",
 				"text": "我"
 			}
 		]
