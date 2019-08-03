@@ -189,6 +189,26 @@ export const getInteractives = (interid,data) => {
     return http.get('v1/interactives/'+interid+'/',data);
 }
 
+// 用户作答
+export const setInteractives = (updateid,data) => {
+	if(updateid>0){//更改
+		return http.put('v1/userinteractives/'+updateid+'/',data);	
+	}else{ //新建
+		return http.post('v1/userinteractives/',data); 		
+	}
+	  
+}
+
+//提取所有用户作答
+export const getAllInteractives = (param,data) => {
+	return http.get('v1/userinteractives/'+param,data);   
+}
+
+//提取用户作答
+export const getUserInteractives = (interid,data) => {
+	return http.get('v1/userinteractives/'+interid+'/',data);   
+}
+
 // 默认全部导出  import api from '@/common/vmeitime-http/'
 export default {
 	isSuccess,
@@ -215,5 +235,8 @@ export default {
 	setsnap,
 	getCatalogue,
 	gotoInteractives,
-	getInteractives
+	getInteractives,
+	setInteractives,
+	getUserInteractives,
+	getAllInteractives
 }

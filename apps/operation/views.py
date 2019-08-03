@@ -10,7 +10,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
 
 from .serializers import UserCommentsSerializer, UserCommentsSubSerializer, UserFavoriteSerializer, UserSnapSerializer\
-    , UserInteractivesSerializer
+    , UserInteractivesSerializer, UserInteractivesSerializer1
 from .models import UserComments, UserFavorite, UserSnap, UserInteractives
 from common.permissions import IsOwnerOrReadOnly
 from common import permissions as permissions1
@@ -138,8 +138,8 @@ class UserSnapViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.
         return Response(serializer.data)
 
 
-class UserInteractivesViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin,
-                              mixins.ListModelMixin, viewsets.GenericViewSet):
+class UserInteractivesViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin,
+                              mixins.UpdateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     """
     list:
         提取作答信息
@@ -157,6 +157,14 @@ class UserInteractivesViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
     serializer_class = UserInteractivesSerializer
     queryset = UserInteractives.objects.all()
 
+    def get_serializer_class(self):
+        if self.action == "retrieve" or self.action == "list":
+            return UserInteractivesSerializer1
+        elif self.action == "create" or self.action == "update":
+            return UserInteractivesSerializer
+
+        return UserInteractivesSerializer
+
     def get_permissions(self):
         if self.action == "list":
             return []
@@ -165,14 +173,25 @@ class UserInteractivesViewSet(mixins.CreateModelMixin, mixins.DestroyModelMixin,
 
         return []
 
-    def list(self, request, *args, **kwargs):
-        user_id = request.GET.get('user', 0)
-        if int(user_id) > 0:
-            interactive_list = UserInteractives.objects.filter(user=user_id)
+    def get_queryset(self):
+        if self.action == "list":
+            hasdo = self.request.GET.get('hasdo', 0)
+            interid = self.request.GET.get('interid', 0)
+            if int(hasdo) > 0 or int(interid) > 0:
+                if int(hasdo) == 1:
+                    if int(interid) > 0:
+                        return UserInteractives.objects.filter(has_read=True, interactive=interid).order_by('-id')
+                    else:
+                        return UserInteractives.objects.filter(has_read=True).order_by('-id')
+                else:
+                    if int(interid) > 0:
+                        return UserInteractives.objects.filter(has_read=False, interactive=interid).order_by('-id')
+                    else:
+                        return UserInteractives.objects.filter(has_read=False).order_by('-id')
+            else:
+                return UserInteractives.objects.all().order_by('-id')
         else:
-            interactive_list = UserInteractives.objects.all()
-        serializer = self.get_serializer(interactive_list)
-        return Response(serializer.data)
+            return UserInteractives.objects.all()
 
 
 # 自定义分页类

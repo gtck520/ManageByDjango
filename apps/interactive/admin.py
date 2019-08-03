@@ -24,7 +24,7 @@ class InteractiveMessageAdmin(object):
 
 
 class InteractivesAdmin(object):
-    list_display = ['interclass', 'content', 'score', 'content_type', 'pre_content', 'next_content', 'bible_contents',
+    list_display = ['interclass', 'content', 'score', 'content_type', 'pre_content', 'bible_contents',
                     'new_contents', 'add_time',  'sort']
     search_fields = ['content']
     list_filter = ['interclass', 'content', 'score', 'content_type', 'add_time']

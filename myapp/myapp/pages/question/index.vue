@@ -4,25 +4,25 @@
 														
 					<view class="cu-bar bg-white solid-bottom">
 						<view class="action text-black">
-							<text class="cuIcon-title text-red"></text>{{subjectData.content}}
+							<text class="cuIcon-title text-red"></text>{{subjectData.content}}？
 						</view>
 					</view>
 					<view>
 
 						<radio-group class="block"  @change="RadioboxChange" v-if="subjectData.answer_type===0">
-							<view class="cu-form-group" v-for="(option,index) in subjectData.next_content" :key='index'>
-								<radio :value="option.id"></radio>
+							<view class="cu-form-group" v-for="(option,index) in subjectData.subs" :key='index' v-if="option.content_type===2">
+								<radio :value="option.id" :checked="setsubject[0]==option.id?true:false" ></radio>
 								<view class="title text-black">{{index+1}}.{{option.content}}</view>
 							</view>
 						</radio-group>
 
 						<checkbox-group class="block"  @change="CheckboxChange" v-else-if="subjectData.answer_type===1">
-							<view class="cu-form-group" v-for="(option,index) in subjectData.next_content" :key='index' >
-								<checkbox :value="option.id" :class="subject.userAnswer.indexOf(option.id) > -1?'checked':''" :checked="subject.userAnswer.indexOf(option.id) > -1?true:false"></checkbox>
-								<view class="title  text-black">{{index+1}}.{{option.content}}</view>
+							<view class="cu-form-group" v-for="(option,index) in subjectData.subs" :key='index' >
+								<checkbox :value="option.id" :checked="option.checked" v-if="option.content_type===2"></checkbox>
+								<view class="title  text-black" v-if="option.content_type===2">{{index+1}}.{{option.content}}</view>
 							</view>
 						</checkbox-group>
-
+								
 						<view v-else-if="subjectData.answer_type===2">
 							<view class="cu-form-group solid-bottom">
 								<view class="title  text-black">
@@ -30,6 +30,9 @@
 								</view>
 								<input placeholder="文本输入框" name="input" @blur="textInput" ></input>
 							</view>
+						</view>		
+						<view class="padding">				
+						<button class="cu-btn block bg-blue margin-tb-sm lg" type="" @click="setAnwser" >确认</button>
 						</view>
 					</view>
 
@@ -43,7 +46,12 @@
 	export default {
 		data() {
 			return {
+				answer:'',
+				answerid:0,
+				subjectId:0,
 				subjectData:{},
+				setsubject:[],
+				nextid:0 //多选情况的 下一题id
 			}
 		},
 		onReady() {
@@ -54,47 +62,101 @@
 			this.getInteractives(Interid);
 		},
 		methods: {
-			getInteractives(interid){//获取交互内容		
+			getInteractives(interid){//获取交互内容
+				this.subjectId=interid;
 				this.loading = true
 				this.$api.getInteractives(interid,{noncestr: Date.now()}).then((res)=>{
 					this.loading = false;
 					this.subjectData = res.data;
-					console.log(this.subjectData)
+					// console.log(this.subjectData)
+					let sublist = this.subjectData.subs;
+					sublist.forEach(item=>{
+						if(item.content_type===1){
+							this.nextid=item.id;
+						}
+					})				
+					
+					this.getUserInteractives(interid);
 				}).catch((err)=>{
 					this.loading = false;
 					console.log('request fail', err);
 				});		
-			},			
-			RadioboxChange : function(e) { //单选选中
-			
-				var items = this.subjectList[this.subjectIndex].optionList;
-				var values = e.detail.value;
-				this.subjectList[this.subjectIndex].userAnswer = values;
-				if(this.autoRadioNext && this.subjectIndex < this.subjectList.length - 1){
-					this.subjectIndex += 1;						
-					};
+			},		
+			getUserInteractives(interid){//提取已作答内容
+				this.loading = true;
+				this.setsubject=[];
+				this.$api.getAllInteractives('?hasdo=1&interid='+interid,{noncestr: Date.now()}).then((res)=>{
+					this.loading = false;	
+					this.answerid=res.data[0].id;
+					this.answer=res.data[0].answer;					
+					if(res.data[0].interactive.answer_type===0){//单选	
+						this.setsubject.push(parseInt(res.data[0].answer));
+					}
+					else if(res.data[0].interactive.answer_type===1){//多选					
+						this.setsubject = res.data[0].answer.split(",");
+						let sublist = this.subjectData.subs;
+						this.subjectData.subs=[];
+						sublist.forEach(item=>{
+							if(this.setsubject.indexOf(item.id.toString()) > -1){
+								item.checked= true;
+							}
+							else{
+								item.checked= false;
+							}
+							this.subjectData.subs.push(item);
+						})				
+					}
+				}).catch((err)=>{
+					this.loading = false;
+					this.answerid=0;
+					console.log('request fail', err);
+				});	
 				
+			},
+			RadioboxChange : function(e) { //单选选中
+				this.answer = e.detail.value;
 			},
 			CheckboxChange: function(e) { //复选选中
+               var  values = e.detail.value;
+			   this.answer = values.join(',');
 
-				var items = this.subjectList[this.subjectIndex].optionList;
-				var values = e.detail.value;
-				this.subjectList[this.subjectIndex].userAnswer = "";
-				for (var i = 0, lenI = items.length; i < lenI; ++i) {
-					for (var j = 0, lenJ = values.length; j < lenJ; ++j) {
-						if (items[i].id == values[j]) {
-
-							this.subjectList[this.subjectIndex].userAnswer += items[i].id;
-							break
-						}
-					}
-				}
 			},
-			textInput : function(e) { //填空题
-			
-				this.subjectList[this.subjectIndex].userAnswer = e.detail.value;
+			textInput : function(e) { //填空题			
+				this.subjectList[this.subjectIndex].userAnswer = e.detail.value;				
+			},
+			setAnwser : function(){
+				this.loading = true;
+				var updateid = 0;
+				if (this.setsubject.length == 0){				
+					updateid = 0;
+				}else {			
+					updateid = this.answerid;
+				}
+				this.$api.setInteractives(updateid,{
+					'has_read':true,
+					'answer':this.answer,
+					'interactive':this.subjectId,
+				}).then((res)=>{
+					this.loading = false;
+					if(this.$api.islogin(res.data)){
+						this.$api.getInteractives(this.nextid,{noncestr: Date.now()}).then((res)=>{
+						// console.log(res.data.subs[0]['id']);
+						if(this.nextid>0){//多选的情况，提取的为 子选项中内容类型为 问题的记录 作为下一条问题
+							this.getInteractives(res.data.id);
+						}else{
+							this.getInteractives(res.data.subs[0]['id']);
+						}
+								
+						});	
+					}
+					
+				}).catch((err)=>{
+					this.loading = false;
+					console.log('request fail', err);
+				});	
 				
-			}	
+			}
+			
 		}
 	}
 </script>

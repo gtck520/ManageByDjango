@@ -40,7 +40,7 @@ class InteractivesSerializer(serializers.ModelSerializer):
     """
     interclass = InteractiveClassSerializer()
     intermessage = InteractiveMessageSerializer()
-    next_content = InteractivesSerializer1(many=True)
+    subs = InteractivesSerializer1(many=True)
 
     class Meta:
         model = Interactives
