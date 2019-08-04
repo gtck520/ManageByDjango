@@ -1,5 +1,10 @@
 <template>
-	<view >		
+	<view >	
+		<!-- 顶部 -->
+		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" :isBack="true">
+			<block slot="backText">返回</block>
+			<block slot="content"></block>
+		</cu-custom>
 		<scroll-view scroll-x class="bg-white nav">
 			<view class="flex text-center">
 				<view class="cu-item flex-sub" :class="index==TabCur?'text-orange cur':''" v-for="(item,index) in tabbars" :key="index" @tap="tabSelect" :data-id="index">

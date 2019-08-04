@@ -1,5 +1,10 @@
 <template>
 	<view >		
+		<!-- 顶部 -->
+		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" :isBack="false" :isShadown="false">
+			<block slot="backText"></block>
+			<block slot="content"></block>
+		</cu-custom>
 		<!-- #ifndef MP-ALIPAY -->
 		<swiper class="card-swiper" :class="dotStyle?'square-dot':'round-dot'" :indicator-dots="true" :circular="true"
 		 :autoplay="true" interval="5000" duration="500" @change="cardSwiper" indicator-color="#8799a3"

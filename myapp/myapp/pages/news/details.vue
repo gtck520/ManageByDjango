@@ -1,6 +1,9 @@
 <template>
-	<view class="content">
-	
+	<view class="contenta">
+		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" :isBack="true">
+			<block slot="backText">返回</block>
+			<block slot="content"></block>
+		</cu-custom>
 		<scroll-view class="scroll" scroll-y>
 			<view class="scroll-content">
 				<view class="introduce-section">
@@ -328,7 +331,7 @@
 	page{
 		height: 100%;
 	}
-	.content{
+	.contenta{
 		display: flex;
 		flex-direction: column;
 		height: 100%;

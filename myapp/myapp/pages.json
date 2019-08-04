@@ -1,12 +1,22 @@
 {
 	"pages": [
-		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages        
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages  
+		{
+			"path":"pages/mine/children/register"
+		},
+		{
+			"path": "pages/mine/mine",
+			"style": {}
+			
+		},     
+		{
+			//登陆
+			"path": "pages/mine/children/login",
+			"style": {}
+		},
 		{
             "path" : "pages/question/catalogue",
 			"style": {
-                "app-plus" : {
-                    "titleNView" : false //禁用原生导航栏
-                },
 				"navigationBarTitleText": "目录"
 			}
         },
@@ -16,7 +26,11 @@
 		},
 		{
 			"path": "pages/news/details",
-			"style": {}			
+			"style": {
+                "navigationBarTextStyle" : "white",
+                "navigationBarTitleText" : "我的",
+                "navigationBarBackgroundColor" : "#0081ff"
+			}			
 		},
 		{
 			"path": "pages/news/videoDetails",
@@ -42,32 +56,7 @@
         },
 		{
 			"path": "pages/bible/content",
-			"style": {
-                "app-plus" : {
-                    "titleNView" : false //禁用原生导航栏
-                },
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/basiclogin/registration",
-			"style": {
-                "app-plus" : {
-                    "titleNView" : false //禁用原生导航栏
-                },
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/tabbar/tabbar-5/my",
-			"style": {
-                "app-plus" : {
-                    "titleNView" : false //禁用原生导航栏
-                },
-                "navigationBarTextStyle" : "white",
-                "navigationBarTitleText" : "我的",
-                "navigationBarBackgroundColor" : "#0081ff"
-				}
+			"style": {}
 		},
 		{
 			"path": "pages/index/index",
@@ -94,24 +83,6 @@
 		{
 			"path": "pages/tabbar/tabbar-3/tabbar-3",
 			"style": {}
-		},
-		{
-			"path": "pages/basiclogin/forget-password",
-			"style": {
-                "app-plus" : {
-                    "titleNView" : false //禁用原生导航栏
-                },
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/basiclogin/login",
-			"style": {
-                "app-plus" : {
-                    "titleNView" : false //禁用原生导航栏
-                },
-				"navigationBarTitleText": ""
-			}
 		}
 	    
 
@@ -122,10 +93,11 @@
 			"transparentTitle": "always",
 			"allowsBounceVertical": "NO"
 		},
-		"navigationBarBackgroundColor": "#0081ff",
-		"navigationBarTitleText": "ColorUi for UniApp",
-		"navigationStyle": "default",
-		"navigationBarTextStyle": "white"
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "KONGER",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"navigationStyle": "custom"
 	},
 	"tabBar": {
 		"borderStyle": "white",
@@ -151,7 +123,7 @@
 				"text": "文章"
 			},
 			{
-				"pagePath": "pages/tabbar/tabbar-5/my",
+				"pagePath": "pages/mine/mine",
 				"text": "我"
 			}
 		]

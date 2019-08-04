@@ -24,10 +24,10 @@ class InteractiveMessageAdmin(object):
 
 
 class InteractivesAdmin(object):
-    list_display = ['interclass', 'content', 'score', 'content_type', 'pre_content', 'bible_contents',
+    list_display = ['interclass', 'content', 'score', 'content_type', 'answer_type', 'pre_content', 'bible_contents',
                     'new_contents', 'add_time',  'sort']
     search_fields = ['content']
-    list_filter = ['interclass', 'content', 'score', 'content_type', 'add_time']
+    list_filter = ['interclass', 'content', 'score', 'content_type', 'answer_type', 'add_time']
     relfield_style = 'fk-ajax'
     # list_per_page设置每页显示多少条记录，默认是100条
     list_per_page = 20

@@ -13,6 +13,7 @@ class InteractiveClass(models.Model):
     number = models.IntegerField(default=0, verbose_name=u"问题数")
     score = models.IntegerField(default=0, verbose_name=u"总分数")
     sort = models.IntegerField( verbose_name=u"排序", default=0)
+    is_done = models.BooleanField(default=False, verbose_name=u"是否全部完成")
     add_time = models.DateTimeField(default=datetime.now,  verbose_name=u"添加时间")
 
     class Meta:
@@ -41,6 +42,10 @@ class InteractiveMessage(models.Model):
 
 
 class Interactives(models.Model):
+    """
+    录入说明：题目类型设置为‘问题内容’ 答案类型设置为‘选项内容’，每一个内容的子项 为下一题内容。注意如果是 ‘多选’
+    ，与‘填写’ 则子项必须增加一个 ‘问题内容’作为下一题内容。 ‘是否结束’标志着当前答题分支的结束。
+    """
     interclass = models.ForeignKey(InteractiveClass, verbose_name=u"分类", on_delete=models.CASCADE)
     content = models.CharField(max_length=255,  verbose_name=u"内容")
     score = models.IntegerField(default=0, verbose_name=u"得分")
@@ -54,6 +59,7 @@ class Interactives(models.Model):
                                    null=True, blank=True, verbose_name=u"背景图", max_length=100)
     bible_contents = models.CharField(max_length=50, null=True, blank=True, verbose_name=u"引用经文")
     new_contents = models.ForeignKey(Articles, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=u"引用新闻")
+    is_end = models.BooleanField(default=False, verbose_name=u"是否结束")
     add_time = models.DateTimeField(default=datetime.now,  verbose_name=u"添加时间")
 
     class Meta:

@@ -1,9 +1,9 @@
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
+		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">{{fullname}}</block>
-			</cu-custom>
+		</cu-custom>
 		<view class="cu-bar bg-white solid-bottom margin-top">
 			<view class="action">
 				<text class="cuIcon-title text-blue"></text>{{ChapterSN}}

@@ -1,5 +1,10 @@
 <template>
-	<view class="content">		
+	<view class="contenta">	
+		<!-- 顶部 -->
+		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" :isBack="false" :isShadown="false">
+			<block slot="backText"></block>
+			<block slot="content"></block>
+		</cu-custom>
 		<!-- 顶部选项卡 -->
 		<scroll-view id="nav-bar" class="nav-bar" scroll-x scroll-with-animation :scroll-left="scrollLeft">
 			<view 
@@ -278,7 +283,7 @@
 
 <style lang='scss'>
 	
-	page, .content{
+	page, .contenta{
 		background-color: #f8f8f8;
 		height: 100%;
 		overflow: hidden;

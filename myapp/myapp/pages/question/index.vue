@@ -1,8 +1,12 @@
 <template>
-	<view>
+	<view>		
+		<cu-custom bgImage="https://image.weilanwl.com/color2.0/plugin/sylb2244.jpg" :isBack="true">
+			<block slot="backText">返回</block>
+			<block slot="content"></block>
+		</cu-custom>
 		<form>
 														
-					<view class="cu-bar bg-white solid-bottom">
+					<view class="cu-bar bg-white solid-bottom" v-if="subjectData.is_end==false">
 						<view class="action text-black">
 							<text class="cuIcon-title text-red"></text>{{subjectData.content}}？
 						</view>
@@ -28,11 +32,15 @@
 								<view class="title  text-black">
 									答：
 								</view>
-								<input placeholder="文本输入框" name="input" @blur="textInput" ></input>
+								<input placeholder="文本输入框" name="input" @blur="textInput" :value="answer"></input>
 							</view>
 						</view>		
-						<view class="padding">				
-						<button class="cu-btn block bg-blue margin-tb-sm lg" type="" @click="setAnwser" >确认</button>
+						<view class="padding" v-if="subjectData.is_end==false">				
+							<button class="cu-btn block bg-blue margin-tb-sm lg" type="" @click="setAnwser" >确认</button>
+						</view>
+						<view class="padding" v-else>							
+							<text class="text-black">{{subjectData.content}}</text>		
+							<button class="cu-btn block bg-blue margin-tb-sm lg" type="" @click="setEnd" >确认</button>
 						</view>
 					</view>
 
@@ -46,11 +54,11 @@
 	export default {
 		data() {
 			return {
-				answer:'',
-				answerid:0,
-				subjectId:0,
+				answer:'',//作答答案
+				answerid:0,//答题表id
+				subjectId:0,//当前问题id
 				subjectData:{},
-				setsubject:[],
+				setsubject:[],//已作答答案内容
 				nextid:0 //多选情况的 下一题id
 			}
 		},
@@ -64,7 +72,8 @@
 		methods: {
 			getInteractives(interid){//获取交互内容
 				this.subjectId=interid;
-				this.loading = true
+				this.loading = true;
+				this.nextid=0;
 				this.$api.getInteractives(interid,{noncestr: Date.now()}).then((res)=>{
 					this.loading = false;
 					this.subjectData = res.data;
@@ -85,6 +94,8 @@
 			getUserInteractives(interid){//提取已作答内容
 				this.loading = true;
 				this.setsubject=[];
+				this.answer='';
+				this.answerid=0;
 				this.$api.getAllInteractives('?hasdo=1&interid='+interid,{noncestr: Date.now()}).then((res)=>{
 					this.loading = false;	
 					this.answerid=res.data[0].id;
@@ -105,6 +116,8 @@
 							}
 							this.subjectData.subs.push(item);
 						})				
+					}else{
+						this.setsubject.push(res.data[0].answer);
 					}
 				}).catch((err)=>{
 					this.loading = false;
@@ -122,7 +135,7 @@
 
 			},
 			textInput : function(e) { //填空题			
-				this.subjectList[this.subjectIndex].userAnswer = e.detail.value;				
+				this.answer = e.detail.value;				
 			},
 			setAnwser : function(){
 				this.loading = true;
@@ -139,7 +152,13 @@
 				}).then((res)=>{
 					this.loading = false;
 					if(this.$api.islogin(res.data)){
-						this.$api.getInteractives(this.nextid,{noncestr: Date.now()}).then((res)=>{
+						if(this.nextid>0){
+							var nextid = this.nextid;
+						}else
+						{
+							var nextid = this.answer;
+						}						
+						this.$api.getInteractives(nextid,{noncestr: Date.now()}).then((res)=>{
 						// console.log(res.data.subs[0]['id']);
 						if(this.nextid>0){//多选的情况，提取的为 子选项中内容类型为 问题的记录 作为下一条问题
 							this.getInteractives(res.data.id);
@@ -155,6 +174,11 @@
 					console.log('request fail', err);
 				});	
 				
+			},
+			setEnd:function(){
+				uni.navigateTo({
+					url: 'catalogue',
+				})
 			}
 			
 		}
