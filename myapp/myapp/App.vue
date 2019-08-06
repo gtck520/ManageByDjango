@@ -70,4 +70,31 @@
 		-webkit-box-shadow: 0 0 36px 0 rgba(43,86,112,.1) !important;
 		box-shadow: 0 0 36px 0 rgba(43,86,112,.1) !important;
 	}
+	/* mixnews */
+		@font-face {
+		font-family: yticon;
+		font-weight: normal;
+		font-style: normal;
+		src: url('https://at.alicdn.com/t/font_1078604_3mrhac2o3oi.ttf') format('truetype');
+	}
+	
+	.yticon {
+		font-family: "yticon" !important;
+		font-size: 16px;
+		font-style: normal;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	.icon-shoucang:before {
+		content: "\e645";
+	}
+	.icon-shoucang_xuanzhongzhuangtai:before {
+		content: "\e6a9";
+	}
+	.icon-dianzan-ash:before {
+	  content: "\e617";
+	}
+	.icon-fenxiang2:before {
+		content: "\e61e";
+	}
 </style>

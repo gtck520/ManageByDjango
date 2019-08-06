@@ -58,7 +58,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("nick_strname", "username", "gender", "birthday", "email", "mobile", "image")
+        fields = ("id", "nick_strname", "username", "gender", "birthday", "email", "mobile", "image")
 
     def get_nick_strname(self, obj):
         if obj.nick_name:
@@ -120,4 +120,4 @@ class UserRegSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("username", "code", "mobile", "password")
+        fields = ("username", "code", "mobile", "password", "recommend")

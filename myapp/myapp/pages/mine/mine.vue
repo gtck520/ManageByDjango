@@ -18,10 +18,12 @@
 		
 		<view class="cu-list menu sm-border card-menu margin-top bar-shadown">
 			<view class="cu-item arrow" >
+				<navigator :url="'children/share?m='+userinfo.id">
 				<view class="content">
 					<text class="cuIcon-roundadd text-grey"></text>
-					<text class="text-grey">设备</text>
+					<text class="text-grey">我的推荐码</text>
 				</view>
+				</navigator>
 			</view>
 			<view class="cu-item arrow" >
 				<view class="content">

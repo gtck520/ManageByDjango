@@ -60,9 +60,12 @@ export const isSuccess = (statusCode) => {
 export const getGlobalUser = (data) => {
 	//设置请求结束后拦截器
 	http.interceptor.response = (response) => {
-		console.log('个性化response....')
-		if(response.data.detail=='Signature has expired.'){
-			uni.removeStorageSync('token');
+
+		if(response!=undefined && response!=null && response!=''){
+					console.log('个性化response12312312313....')
+			if(response.data.detail=='Signature has expired.'){
+				uni.removeStorageSync('token');
+			}
 		}
 		//判断返回状态 执行相应操作
 		return response;

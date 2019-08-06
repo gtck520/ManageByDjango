@@ -32,7 +32,7 @@ class UserProfile(AbstractUser):
     image = models.ImageField(upload_to="image/%Y/%m", default=u"image/default.png", max_length=100)
     score = models.IntegerField(default=0, verbose_name=u"得分")
     level = models.ForeignKey(UserLevel, on_delete=models.CASCADE, null=True, blank=True, verbose_name=u"等级")
-    recommend = models.IntegerField(default=0, verbose_name=u"推荐人")
+    recommend = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='subs', null=True, blank=True, verbose_name=u"推荐人")
     contribution = models.IntegerField(default=0, verbose_name=u"贡献值")
 
     class Meta:

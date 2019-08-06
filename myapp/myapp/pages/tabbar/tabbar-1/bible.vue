@@ -119,6 +119,10 @@
 			IsCard(e) {
 				this.isCard = e.detail.value
 			},
+			// cardSwiper
+			cardSwiper(e) {
+				this.cardCur = e.detail.current
+			},
 			// towerSwiper
 			// 初始化towerSwiper
 			TowerSwiper(name) {

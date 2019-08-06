@@ -229,6 +229,11 @@
                 }).catch((err)=>{
                     this.loading = false;
 					_this.isRotate=false
+					uni.showToast({
+						icon: 'none',
+						position: 'bottom',
+						title: err.data.code[0]
+					});	
                     console.log('注册失败:', err);
                 });					
 				

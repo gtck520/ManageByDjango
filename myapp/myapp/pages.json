@@ -2,13 +2,18 @@
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages  
 		{
-			"path":"pages/mine/children/register"
-		},
-		{
 			"path": "pages/mine/mine",
 			"style": {}
 			
-		},     
+		}, 
+		{
+			"path": "pages/mine/children/share",
+			"style": {}
+			
+		}, 
+		{
+			"path":"pages/mine/children/register"
+		},    
 		{
 			//登陆
 			"path": "pages/mine/children/login",
@@ -26,11 +31,7 @@
 		},
 		{
 			"path": "pages/news/details",
-			"style": {
-                "navigationBarTextStyle" : "white",
-                "navigationBarTitleText" : "我的",
-                "navigationBarBackgroundColor" : "#0081ff"
-			}			
+			"style": {}			
 		},
 		{
 			"path": "pages/news/videoDetails",

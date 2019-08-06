@@ -31,7 +31,7 @@ http.delete('user/1').then((res)=>{
 */
 export default {
 	config: {
-		baseUrl: "http://127.0.0.1:8000/",
+		baseUrl: "http://192.168.2.102:8000/",
 		header: {
 			'Content-Type':'application/json;charset=UTF-8',
 			'Content-Type':'application/x-www-form-urlencoded'
