@@ -7,8 +7,8 @@
 	<view class="top"></view>
 	<view class="banner">
 		<dl>
-			<dt><image src="../../../static/img/logo.png" mode=""></image></dt>
-			<dd>konger</dd>
+			<dt><image :src="userinfo.image" mode=""></image></dt>
+			<dd>{{userinfo.mobile}}</dd>
 		</dl>
 		<view class="img">
 			<view class="qrimg-i">
@@ -24,9 +24,8 @@
 		<!-- <button class="btn" @click="share">分享</button> -->
 		<view class="shartitle"><view>分享</view></view>
 		<view class="sharapk" @click="share">
-			<view><image src="../../static/weact.png"></image></view>
-			<view><image src="../../static/shar.png"></image></view>
-			<view><image src="../../static/qq.png"></image></view>
+			<view><image src="../../../static/img/shar.png"></image></view>
+			<view><image src="../../../static/img/qq.png"></image></view>
 		</view>
 		
 		
@@ -95,14 +94,16 @@ import tkiQrcode from '@/components/tki-qrcode/tki-qrcode.vue'
 				providerList:[],				
 				sourceLink: 'http://yunzhujiao.cn/bind_pub/index.html',		
 				type:0,
+				userinfo:''
 			}
 		},
 		components: {
 			tkiQrcode
 		},
 		onLoad(option) {
-			this.val=this.$weburl+'#/pages/mine/children/register?re='+option.m;
-			this.creatQrcode;
+			this.userinfo = JSON.parse(option.m);
+			this.val=this.$weburl+'#/pages/mine/children/register?re='+this.userinfo.id;
+			this.creatQrcode();
 			this.version = plus.runtime.version;
 			uni.getProvider({
 				service: 'share',
@@ -146,18 +147,18 @@ import tkiQrcode from '@/components/tki-qrcode/tki-qrcode.vue'
 					data: this.val,
 					success: function () {
 						console.log('success');
-						uni.showModal({
-							title: '复制成功',
-							content: '内容已复制到粘贴板，可前往其他应用粘贴查看。', 
-							showCancel:false,
-							success: function(res) {
-								if (res.confirm) {											 
-									//console.log('用户点击确定');
-								} else if (res.cancel) {
-									//console.log('用户点击取消');
-								}
-							}
-						});
+						// uni.showModal({
+						// 	title: '复制成功',
+						// 	content: '内容已复制到粘贴板，可前往其他应用粘贴查看。', 
+						// 	showCancel:false,
+						// 	success: function(res) {
+						// 		if (res.confirm) {											 
+						// 			//console.log('用户点击确定');
+						// 		} else if (res.cancel) {
+						// 			//console.log('用户点击取消');
+						// 		}
+						// 	}
+						// });
 					}
 				});
 			},

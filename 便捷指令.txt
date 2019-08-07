@@ -13,7 +13,9 @@ cd F:\mypro\python\ManageByDjango
 停止服务：redis-server --service-stop
 
 重命名服务：redis-server --service-name name
+linux 启动redis ./redis-server /www/download/redis-4.0.10/redis.conf
 
+关闭  ps -aux | grep redis  查看进程  kill -9 18714 强制杀死
 
 
 解决socket.timeout: The read operation timed out 方法，设置超时时间

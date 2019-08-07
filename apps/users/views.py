@@ -19,7 +19,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler, jwt_decode_handler
 
 from .serializers import SmsSerializer, UserRegSerializer, UserDetailSerializer, CaptchaSerializer, \
-    CaptchaCheckSerializer
+    CaptchaCheckSerializer, UserUpdateSerializer
 from ManageByDjango.settings import APIKEY
 from common.yunpian import YunPian
 from .models import VerifyCode
@@ -136,12 +136,14 @@ class UserViewset(CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveMode
             return UserDetailSerializer
         elif self.action == "create":
             return UserRegSerializer
+        elif self.action == "update":
+            return UserUpdateSerializer
 
         return UserDetailSerializer
 
     # permission_classes = (permissions.IsAuthenticated, )
     def get_permissions(self):
-        if self.action == "retrieve":
+        if self.action == "retrieve" or self.action == "update":
             return [permissions.IsAuthenticated()]
         elif self.action == "create":
             return []

@@ -72,7 +72,10 @@ export const getGlobalUser = (data) => {
 	}
     return http.get('v1/userinfo/',data);
 }
-
+// 更改用户信息
+export const setUserinfo = (updateid,data) => {
+	return http.put('v1/users/'+updateid+'/',data);	
+}
 // 获取验证码
 export const getCaptcha = (data) => {
     return http.get('v1/captchas/',data);
@@ -234,6 +237,7 @@ export default {
 	getfavorite,
 	setfavorite,
 	getGlobalUser,
+	setUserinfo,
 	getsnap,
 	setsnap,
 	getCatalogue,

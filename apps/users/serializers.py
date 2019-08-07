@@ -7,6 +7,7 @@ from datetime import datetime
 from datetime import timedelta
 from rest_framework.validators import UniqueValidator
 from .models import VerifyCode
+from drf_extra_fields.fields import Base64ImageField
 
 from ManageByDjango.settings import REGEX_MOBILE
 
@@ -68,6 +69,17 @@ class UserDetailSerializer(serializers.ModelSerializer):
         else:
             nickname = obj.username
         return nickname
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    """
+    用户更新序列化类
+    """
+    image = Base64ImageField(max_length=None, use_url=True, required=False)
+
+    class Meta:
+        model = User
+        fields = ("id", "nick_name", "gender", "birthday", "email", "mobile", "image")
 
 
 class UserRegSerializer(serializers.ModelSerializer):

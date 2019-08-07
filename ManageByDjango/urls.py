@@ -23,7 +23,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
 from captcha.views import captcha_refresh
 
-from ManageByDjango.settings import MEDIA_ROOT
+from ManageByDjango.settings import MEDIA_ROOT, STATIC_ROOT
 from users.views import SmsCodeViewset, UserViewset, UserInfoViewSet, CaptchaViewset, CaptchaCheckViewset
 from news.views import NewsViewSet, NewsClassViewSet
 from interactive.views import InteractivesViewSet, InteractiveClassViewSet
@@ -74,7 +74,8 @@ urlpatterns = [
 
     # 配置上传文件的访问处理函数
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
-
+    # 静态文件目录
+    re_path(r'^static/(?P<path>.*)$',  serve, {"document_root":STATIC_ROOT}),
     # 富文本编辑器
     path('ueditor/', include('DjangoUeditor.urls')),
 

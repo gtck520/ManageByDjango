@@ -206,3 +206,48 @@ pip install selenium
 pip install lxml
 pip install PyExecJS
 scrapy框架
+#########################################################################################################
+pip install django-extra-fields 扩展字段软件包 包括：Base64ImageField 、 HybridImageField 等等
+#############################################################################################################
+17.虚拟环境迁移上线
+进入项目目录新建whls 目录 进入目录 执行pip freeze --all > requirements.txt
+
+目标机无网的情况下，先在开发机器上将包下载到whls目录下－－(有网也可以用此方法，这样可以减少在目标机下载安装包时间)
+whls目录下执行虚拟环境cmd命令pip install --download . -r requirements.txt （注意--download后边的点，代表是下载到当前目录，并且requirements.txt存在于当前目录中，否则会报错）
+
+目标服务器安装虚拟环境
+pip3 install virtualenv
+virtualenv --no-site-packages venv#得到独立第三方包的环境
+ virtualenv --no-site-packages --python=python2    指定你的虚拟环境的python解释器版本
+source venv/bin/activate #进入虚拟环境
+
+pip install -r requirements.txt #进入项目的whls安装依赖包（有网情况）
+pip list（可以查看安装哪些包）
+deactivate命令 #退出
+
+
+pip install uwsgi --upgrade 安装 uwsgi
+第一种 运行项目 uwsgi --http :8001 --chdir /www --home=/path/to/env --module project.wsgi
+
+Nginx站点配置
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+         
+替换为：
+ 
+        location / {
+                include uwsgi_params;
+                uwsgi_read_timeout 3600;
+                uwsgi_pass 127.0.0.1:9090;
+        }
+
+添加静态文件映射
+
+	location /static/ {
+		root /static/;
+		break;
+	}
+第二种用xml文件 文件配置查看项目根目录  进入根目录执行 uwsgi -x xxx.xml
+ ps aux|grep uwsgi 查看进程
